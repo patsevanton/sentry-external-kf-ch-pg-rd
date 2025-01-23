@@ -11,9 +11,9 @@ resource "yandex_mdb_redis_cluster" "sentry" {
   }
 
   resources {
-    resource_preset_id = "hm1.nano"
+    resource_preset_id = "hm3-c2-m8"
     disk_type_id       = "network-ssd"
-    disk_size          = 16
+    disk_size          = 65
   }
 
   host {
