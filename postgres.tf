@@ -35,11 +35,13 @@ resource "yandex_mdb_postgresql_cluster" "postgresql_cluster" {
 resource "yandex_mdb_postgresql_database" "postgresql_database" {
   cluster_id = yandex_mdb_postgresql_cluster.postgresql_cluster.id
   name       = "sentry"
-  owner      = "sentry"
+  owner      = yandex_mdb_postgresql_user.postgresql_user.name
 
   extension {
     name = "citext"
   }
+
+  depends_on = [yandex_mdb_postgresql_user.postgresql_user]
 }
 
 resource "yandex_mdb_postgresql_user" "postgresql_user" {
