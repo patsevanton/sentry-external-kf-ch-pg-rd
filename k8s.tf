@@ -4,7 +4,7 @@ resource "yandex_iam_service_account" "sa-k8s-editor" {
 }
 
 resource "yandex_resourcemanager_folder_iam_member" "sa-k8s-editor-permissions" {
-  folder_id = local.folder_id
+  folder_id = local.folder_id # var.folder_id == null ? data.yandex_client_config.client.folder_id : var.folder_id
   role      = "editor"
 
   member = "serviceAccount:${yandex_iam_service_account.sa-k8s-editor.id}"
