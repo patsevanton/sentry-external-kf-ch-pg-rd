@@ -1,54 +1,51 @@
-module "postgresql_cluster" {
-  source = "git::https://github.com/terraform-yacloud-modules/terraform-yandex-mdb-postgresql.git?ref=v1.0.0"
+resource "yandex_mdb_postgresql_cluster" "postgresql_cluster" {
+  name                = "sentry"
+  environment         = "PRODUCTION"
+  network_id          = yandex_vpc_network.sentry.id
 
-  name        = "sentry"
-  network_id  = yandex_vpc_network.sentry.id
-  description = "My PostgreSQL cluster description"
-  folder_id   = local.folder_id
+  config {
+    version = "15"
+    autofailover = true
+    backup_retain_period_days = 7
 
-  postgresql_version = "15"
-
-  resource_preset_id = "s2.micro"
-  disk_type_id       = "network-ssd"
-  disk_size          = 34
-
-  hosts = [
-    {
-      zone             = "ru-central1-a"
-      subnet_id        = yandex_vpc_subnet.sentry-a.id
-      assign_public_ip = true
-      name             = "host-a"
-      priority         = 1
-    },
-    {
-      zone             = "ru-central1-b"
-      subnet_id        = yandex_vpc_subnet.sentry-b.id
-      assign_public_ip = true
-      name             = "host-b"
-      priority         = 2
-    },
-    {
-      zone             = "ru-central1-d"
-      subnet_id        = yandex_vpc_subnet.sentry-d.id
-      assign_public_ip = true
-      name             = "host-d"
-      priority         = 2
-    },
-  ]
-
-  database_name  = "sentry"
-  database_owner = "sentry"
-  lc_collate     = "en_US.UTF-8"
-  lc_type        = "en_US.UTF-8"
-
-  extensions = [
-    {
-      name = "citext"
+    resources {
+      disk_size          = 129
+      disk_type_id       = "network-ssd"
+      resource_preset_id = "s3-c2-m8"
     }
-  ]
+  }
 
-  user_name       = "sentry"
-  user_password   = "my_password"
-  user_conn_limit = 50
+  host {
+    zone      = "ru-central1-a"
+    subnet_id = yandex_vpc_subnet.sentry-a.id
+  }
 
+  host {
+    zone      = "ru-central1-b"
+    subnet_id = yandex_vpc_subnet.sentry-b.id
+  }
+
+  host {
+    zone      = "ru-central1-d"
+    subnet_id = yandex_vpc_subnet.sentry-d.id
+  }
+
+}
+
+resource "yandex_mdb_postgresql_database" "postgresql_database" {
+  cluster_id = yandex_mdb_postgresql_cluster.postgresql_cluster.id
+  name       = "sentry"
+  owner      = "sentry"
+
+  extension {
+    name = "citext"
+  }
+}
+
+resource "yandex_mdb_postgresql_user" "postgresql_user" {
+  cluster_id = yandex_mdb_postgresql_cluster.postgresql_cluster.id
+  name       = "sentry"
+  password   = "your_password"
+  conn_limit = 50
+  grants     = []
 }
