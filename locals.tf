@@ -1,3 +1,5 @@
+data "yandex_client_config" "client" {}
+
 locals {
   folder_id           = ""
   k8s_version         = "1.30"

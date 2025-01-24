@@ -1,10 +1,10 @@
 resource "yandex_iam_service_account" "sa-k8s-editor" {
-  folder_id = local.folder_id
+  folder_id = coalesce(local.folder_id, data.yandex_client_config.client.folder_id)
   name      = "sa-k8s-editor"
 }
 
 resource "yandex_resourcemanager_folder_iam_member" "sa-k8s-editor-permissions" {
-  folder_id = local.folder_id # var.folder_id == null ? data.yandex_client_config.client.folder_id : var.folder_id
+  folder_id = coalesce(local.folder_id, data.yandex_client_config.client.folder_id)
   role      = "editor"
 
   member = "serviceAccount:${yandex_iam_service_account.sa-k8s-editor.id}"
@@ -20,7 +20,7 @@ resource "time_sleep" "wait_sa" {
 
 resource "yandex_kubernetes_cluster" "sentry" {
   name       = "sentry"
-  folder_id  = local.folder_id
+  folder_id  = coalesce(local.folder_id, data.yandex_client_config.client.folder_id)
   network_id = yandex_vpc_network.sentry.id
 
   master {
