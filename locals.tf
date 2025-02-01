@@ -11,4 +11,5 @@ locals {
   kafka_password      = "your_password_here"
   clickhouse_user     = "sentry"
   clickhouse_password = "your_password_here"
+  redis_password      = "secretpassword"
 }

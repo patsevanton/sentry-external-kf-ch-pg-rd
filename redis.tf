@@ -5,7 +5,7 @@ resource "yandex_mdb_redis_cluster" "sentry" {
   environment = "PRODUCTION"
 
   config {
-    password         = "secretpassword"
+    password         = local.redis_password
     maxmemory_policy = "ALLKEYS_LRU"
     version     = "7.2"
   }
@@ -19,5 +19,13 @@ resource "yandex_mdb_redis_cluster" "sentry" {
   host {
     zone      = "ru-central1-a"
     subnet_id = yandex_vpc_subnet.sentry-a.id
+  }
+}
+
+output "externalRedis" {
+  value = {
+    host     = yandex_mdb_redis_cluster.sentry.host[0].fqdn
+    port     = 6379
+    password = local.redis_password
   }
 }
