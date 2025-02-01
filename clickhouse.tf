@@ -58,3 +58,14 @@ resource "yandex_mdb_clickhouse_cluster" "sentry" {
   }
 
 }
+
+output "externalClickhouse" {
+  value = {
+    host     = yandex_mdb_clickhouse_cluster.sentry.host[0].fqdn
+    database = one(yandex_mdb_clickhouse_cluster.sentry.database[*].name)
+    httpPort = 8123
+    tcpPort  = 9000
+    username = local.clickhouse_user
+    password = local.clickhouse_password
+  }
+}
