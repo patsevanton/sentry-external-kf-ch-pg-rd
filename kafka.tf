@@ -127,12 +127,9 @@ resource "yandex_mdb_kafka_topic" "topics" {
   partitions         = 1
   replication_factor = 1
 
-  dynamic "topic_config" {
-    for_each = each.value != {} ? [1] : []
-    content {
-      cleanup_policy        = each.value.cleanup_policy
-      min_compaction_lag_ms = each.value.min_compaction_lag_ms
-    }
+  topic_config {
+    cleanup_policy        = lookup(each.value, "cleanup_policy", null)
+    min_compaction_lag_ms = lookup(each.value, "min_compaction_lag_ms", null)
   }
 
   timeouts {
@@ -143,66 +140,7 @@ resource "yandex_mdb_kafka_topic" "topics" {
 }
 
 locals {
-  kafka_permissions = [
-    "cdc",
-    "event-replacements",
-    "events",
-    "events-subscription-results",
-    "generic-events",
-    "generic-metrics-subscription-results",
-    "group-attributes",
-    "ingest-attachments",
-    "ingest-events",
-    "ingest-metrics",
-    "ingest-monitors",
-    "ingest-occurrences",
-    "ingest-performance-metrics",
-    "ingest-replay-events",
-    "ingest-replay-recordings",
-    "ingest-sessions",
-    "ingest-transactions",
-    "metrics-subscription-results",
-    "outcomes",
-    "outcomes-billing",
-    "processed-profiles",
-    "profiles",
-    "profiles-call-tree",
-    "scheduled-subscriptions-events",
-    "scheduled-subscriptions-generic-metrics-counters",
-    "scheduled-subscriptions-generic-metrics-distributions",
-    "scheduled-subscriptions-generic-metrics-sets",
-    "scheduled-subscriptions-metrics",
-    "scheduled-subscriptions-sessions",
-    "scheduled-subscriptions-transactions",
-    "sessions-subscription-results",
-    "shared-resources-usage",
-    "snuba-attribution",
-    "snuba-commit-log",
-    "snuba-dead-letter-generic-events",
-    "snuba-dead-letter-generic-metrics",
-    "snuba-dead-letter-group-attributes",
-    "snuba-dead-letter-metrics",
-    "snuba-dead-letter-querylog",
-    "snuba-dead-letter-replays",
-    "snuba-dead-letter-sessions",
-    "snuba-generic-events-commit-log",
-    "snuba-generic-metrics",
-    "snuba-generic-metrics-counters-commit-log",
-    "snuba-generic-metrics-distributions-commit-log",
-    "snuba-generic-metrics-sets-commit-log",
-    "snuba-metrics",
-    "snuba-metrics-commit-log",
-    "snuba-metrics-summaries",
-    "snuba-queries",
-    "snuba-sessions-commit-log",
-    "snuba-spans",
-    "snuba-transactions-commit-log",
-    "transactions",
-    "transactions-subscription-results",
-    "scheduled-subscriptions-generic-metrics-gauges",
-    "snuba-profile-chunks",
-    "snuba-generic-metrics-gauges-commit-log",
-  ]
+  kafka_permissions = keys(local.kafka_topics)
 }
 
 resource "yandex_mdb_kafka_user" "sentry" {
