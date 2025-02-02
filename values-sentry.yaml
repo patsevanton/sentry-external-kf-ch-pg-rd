@@ -18,7 +18,7 @@ ingress:
 postgresql:
   enabled: false
 externalPostgresql:
-  password: sentry-postgresql-password
+  password: your_password
   host: "c-id.rw.mdb.yandexcloud.net"
   port: 6432
   username: sentry

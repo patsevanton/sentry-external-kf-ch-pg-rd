@@ -47,7 +47,17 @@ resource "yandex_mdb_postgresql_database" "postgresql_database" {
 resource "yandex_mdb_postgresql_user" "postgresql_user" {
   cluster_id = yandex_mdb_postgresql_cluster.postgresql_cluster.id
   name       = "sentry"
-  password   = "your_password"
+  password   = local.postgres_password
   conn_limit = 50
   grants     = []
+}
+
+output "externalPostgresql" {
+  value = {
+    password = local.postgres_password
+    host     = yandex_mdb_postgresql_cluster.postgresql_cluster.id
+    port     = 6432
+    username = yandex_mdb_postgresql_user.postgresql_user.name
+    database = yandex_mdb_postgresql_database.postgresql_database.name
+  }
 }

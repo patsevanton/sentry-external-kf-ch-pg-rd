@@ -12,4 +12,5 @@ locals {
   clickhouse_user     = "sentry"
   clickhouse_password = "your_password_here"
   redis_password      = "secretpassword"
+  postgres_password   = "your_password"
 }
