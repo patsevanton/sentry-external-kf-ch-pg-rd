@@ -228,3 +228,23 @@ resource "yandex_mdb_kafka_user" "sentry" {
     }
   }
 }
+
+output "externalKafka" {
+  description = "Kafka connection details in structured format"
+  value = {
+    cluster = [
+      for host in yandex_mdb_kafka_cluster.sentry.host : {
+        host = host.name
+        port = 9092
+      } if host.role == "KAFKA"
+    ]
+    sasl = {
+      mechanism = "SCRAM-SHA-512"
+      username  = local.kafka_user
+      password  = local.kafka_password
+    }
+    security = {
+      protocol = "SASL_PLAINTEXT"
+    }
+  }
+}
