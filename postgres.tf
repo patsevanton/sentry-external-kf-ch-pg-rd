@@ -55,7 +55,7 @@ resource "yandex_mdb_postgresql_user" "postgresql_user" {
 output "externalPostgresql" {
   value = {
     password = local.postgres_password
-    host     = yandex_mdb_postgresql_cluster.postgresql_cluster.id
+    host     = "c-${yandex_mdb_postgresql_cluster.postgresql_cluster.id}.rw.mdb.yandexcloud.net"
     port     = 6432
     username = yandex_mdb_postgresql_user.postgresql_user.name
     database = yandex_mdb_postgresql_database.postgresql_database.name
