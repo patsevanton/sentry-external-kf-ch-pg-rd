@@ -45,32 +45,32 @@ locals {
     },
     "snuba-metrics" = {},
     "outcomes" = {},
+    "outcomes-dlq" = {},
     "outcomes-billing" = {},
+    "outcomes-billing-dlq" = {},
     "ingest-sessions" = {},
-    "snuba-sessions-commit-log" = {
-      cleanup_policy        = "CLEANUP_POLICY_COMPACT_AND_DELETE"
-      min_compaction_lag_ms = "3600000"
-    },
     "snuba-metrics-commit-log" = {
       cleanup_policy        = "CLEANUP_POLICY_COMPACT_AND_DELETE"
       min_compaction_lag_ms = "3600000"
     },
     "scheduled-subscriptions-events" = {},
     "scheduled-subscriptions-transactions" = {},
-    "scheduled-subscriptions-sessions" = {},
     "scheduled-subscriptions-metrics" = {},
     "scheduled-subscriptions-generic-metrics-sets" = {},
     "scheduled-subscriptions-generic-metrics-distributions" = {},
     "scheduled-subscriptions-generic-metrics-counters" = {},
+    "scheduled-subscriptions-generic-metrics-gauges" = {},
     "events-subscription-results" = {},
     "transactions-subscription-results" = {},
-    "sessions-subscription-results" = {},
     "metrics-subscription-results" = {},
     "generic-metrics-subscription-results" = {},
     "snuba-queries" = {},
     "processed-profiles" = {},
     "profiles-call-tree" = {},
-    "ingest-replay-events" = {},
+    "snuba-profile-chunks" = {},
+    "ingest-replay-events" = {
+      max_message_bytes     = "15000000"
+    },
     "snuba-generic-metrics" = {},
     "snuba-generic-metrics-sets-commit-log" = {
       cleanup_policy        = "CLEANUP_POLICY_COMPACT_AND_DELETE"
@@ -84,38 +84,55 @@ locals {
       cleanup_policy        = "CLEANUP_POLICY_COMPACT_AND_DELETE"
       min_compaction_lag_ms = "3600000"
     },
+    "snuba-generic-metrics-gauges-commit-log" = {
+      cleanup_policy        = "CLEANUP_POLICY_COMPACT_AND_DELETE"
+      min_compaction_lag_ms = "3600000"
+    },
     "generic-events" = {},
     "snuba-generic-events-commit-log" = {
       cleanup_policy        = "CLEANUP_POLICY_COMPACT_AND_DELETE"
       min_compaction_lag_ms = "3600000"
     },
     "group-attributes" = {},
-    "snuba-attribution" = {},
     "snuba-dead-letter-metrics" = {},
-    "snuba-dead-letter-sessions" = {},
     "snuba-dead-letter-generic-metrics" = {},
     "snuba-dead-letter-replays" = {},
     "snuba-dead-letter-generic-events" = {},
     "snuba-dead-letter-querylog" = {},
     "snuba-dead-letter-group-attributes" = {},
     "ingest-attachments" = {},
+    "ingest-attachments-dlq" = {},
     "ingest-transactions" = {},
+    "ingest-transactions-dlq" = {},
+    "ingest-transactions-backlog" = {},
     "ingest-events" = {},
+    "ingest-events-dlq" = {},
     "ingest-replay-recordings" = {},
     "ingest-metrics" = {},
+    "ingest-metrics-dlq" = {},
     "ingest-performance-metrics" = {},
+    "ingest-feedback-events" = {},
+    "ingest-feedback-events-dlq" = {},
     "ingest-monitors" = {},
+    "monitors-clock-tasks" = {},
+    "monitors-clock-tick" = {},
+    "monitors-incident-occurrences" = {},
     "profiles" = {},
     "ingest-occurrences" = {},
     "snuba-spans" = {},
+    "snuba-eap-spans-commit-log" = {},
+    "scheduled-subscriptions-eap-spans" = {},
+    "eap-spans-subscription-results" = {},
+    "snuba-eap-mutations" = {},
+    "snuba-lw-deletions-generic-events" = {},
     "shared-resources-usage" = {},
-    "snuba-metrics-summaries" = {},
-    "scheduled-subscriptions-generic-metrics-gauges" = {},
-    "snuba-profile-chunks" = {},
-    "snuba-generic-metrics-gauges-commit-log" = {
-      cleanup_policy        = "CLEANUP_POLICY_COMPACT_AND_DELETE"
-      min_compaction_lag_ms = "3600000"
-    }
+    "buffered-segments" = {},
+    "buffered-segments-dlq" = {},
+    "uptime-configs" = {},
+    "uptime-results" = {},
+    "snuba-uptime-results" = {},
+    "task-worker" = {},
+    "snuba-ourlogs" = {}
   }
 }
 

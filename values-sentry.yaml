@@ -1,0 +1,58 @@
+user:
+  password: "sentry-admin-password"
+  email: admin@sentry.apatsev.org.ru
+system:
+  url: "http://sentry.apatsev.org.ru"
+nginx:
+  enabled: false
+ingress:
+  enabled: true
+  hostname: sentry.apatsev.org.ru
+  ingressClassName: "nginx"
+  regexPathStyle: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 200m
+    # https://github.com/getsentry/self-hosted/issues/1927
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "16"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "32k"
+postgresql:
+  enabled: false
+externalPostgresql:
+  password: sentry-postgresql-password
+  host: "c-id.rw.mdb.yandexcloud.net"
+  port: 6432
+  username: sentry
+  database: sentry
+redis:
+  enabled: false
+externalRedis:
+  password: secretpassword
+  host: rc1a-id.mdb.yandexcloud.net
+  port: 6379
+externalKafka:
+  cluster:
+    - host: "rc1a-id.mdb.yandexcloud.net"
+      port: 9092
+    - host: "rc1b-id.mdb.yandexcloud.net"
+      port: 9092
+    - host: "rc1d-id.mdb.yandexcloud.net"
+      port: 9092
+  sasl:
+    mechanism: SCRAM-SHA-512
+    username: sentry
+    password: your_password_here
+  security:
+    protocol: SASL_PLAINTEXT
+kafka:
+  enabled: false
+zookeeper:
+  enabled: false
+clickhouse:
+  enabled: false
+externalClickhouse:
+  password: your_password_here
+  host: rc1a-id.mdb.yandexcloud.net
+  database: sentry
+  httpPort: 8123
+  tcpPort: 9000
+  username: sentry
