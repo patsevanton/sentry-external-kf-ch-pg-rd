@@ -93,8 +93,8 @@ resource "yandex_kubernetes_node_group" "k8s-node-group" {
 
 provider "helm" {
   kubernetes {
-    host                   = yandex_kubernetes_cluster.sentry.external_v4_endpoint
-    cluster_ca_certificate = yandex_kubernetes_cluster.sentry.cluster_ca_certificate
+    host                   = yandex_kubernetes_cluster.sentry.master[0].external_v4_endpoint
+    cluster_ca_certificate = yandex_kubernetes_cluster.sentry.master[0].cluster_ca_certificate
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       args        = ["k8s", "create-token"]
