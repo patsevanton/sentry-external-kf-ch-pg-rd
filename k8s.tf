@@ -92,5 +92,5 @@ resource "yandex_kubernetes_node_group" "k8s-node-group" {
 }
 
 output "k8s_cluster_credentials_command" {
-  value = "yc managed-kubernetes cluster get-credentials --id ${yandex_kubernetes_cluster.sentry.id} --external"
+  value = "yc managed-kubernetes cluster get-credentials --id ${yandex_kubernetes_cluster.sentry.id} --external --force"
 }
