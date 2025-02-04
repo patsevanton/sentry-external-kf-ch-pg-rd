@@ -91,6 +91,33 @@ resource "yandex_kubernetes_node_group" "k8s-node-group" {
   }
 }
 
+provider "helm" {
+  kubernetes {
+    host                   = yandex_kubernetes_cluster.sentry.external_v4_endpoint
+    cluster_ca_certificate = yandex_kubernetes_cluster.sentry.cluster_ca_certificate
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      args        = ["k8s", "create-token"]
+      command     = "yc"
+    }
+  }
+}
+
+resource "helm_release" "ingress_nginx" {
+  name             = "ingress-nginx"
+  repository       = "https://kubernetes.github.io/ingress-nginx"
+  chart            = "ingress-nginx"
+  version          = "4.10.1"
+  namespace        = "ingress-nginx"
+  create_namespace = true
+  depends_on       = [yandex_kubernetes_cluster.sentry]
+  set {
+    name  = "controller.service.loadBalancerIP"
+    value = yandex_vpc_address.addr.external_ipv4_address[0].address
+  }
+
+}
+
 output "k8s_cluster_credentials_command" {
   value = "yc managed-kubernetes cluster get-credentials --id ${yandex_kubernetes_cluster.sentry.id} --external --force"
 }
