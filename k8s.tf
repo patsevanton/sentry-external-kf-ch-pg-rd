@@ -24,7 +24,7 @@ resource "yandex_kubernetes_cluster" "sentry" {
   network_id = yandex_vpc_network.sentry.id
 
   master {
-    version = "1.30"
+    version = "1.31"
     zonal {
       zone      = yandex_vpc_subnet.sentry-a.zone
       subnet_id = yandex_vpc_subnet.sentry-a.id
@@ -107,7 +107,7 @@ resource "helm_release" "ingress_nginx" {
   name             = "ingress-nginx"
   repository       = "https://kubernetes.github.io/ingress-nginx"
   chart            = "ingress-nginx"
-  version          = "4.10.1"
+  version          = "4.10.6"
   namespace        = "ingress-nginx"
   create_namespace = true
   depends_on       = [yandex_kubernetes_cluster.sentry]
