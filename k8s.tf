@@ -24,7 +24,7 @@ resource "yandex_kubernetes_cluster" "sentry" {
   network_id = yandex_vpc_network.sentry.id
 
   master {
-    version = "1.31"
+    version = "1.30"
     zonal {
       zone      = yandex_vpc_subnet.sentry-a.zone
       subnet_id = yandex_vpc_subnet.sentry-a.id
