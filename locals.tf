@@ -1,5 +1,33 @@
 data "yandex_client_config" "client" {}
 
+resource "random_password" "kafka" {
+  length      = 20
+  special     = false
+  min_numeric = 4  # Минимум 4 цифры
+  min_upper   = 4  # Минимум 4 заглавные буквы
+}
+
+resource "random_password" "clickhouse" {
+  length      = 20
+  special     = false
+  min_numeric = 4
+  min_upper   = 4
+}
+
+resource "random_password" "redis" {
+  length      = 20
+  special     = false
+  min_numeric = 4
+  min_upper   = 4
+}
+
+resource "random_password" "postgres" {
+  length      = 20
+  special     = false
+  min_numeric = 4
+  min_upper   = 4
+}
+
 locals {
   folder_id           = ""
   k8s_version         = "1.30"
@@ -8,9 +36,20 @@ locals {
   memory_of_k8s_hosts = 20
   cores_of_k8s_hosts  = 4
   kafka_user          = "sentry"
-  kafka_password      = "your_password_here"
+  kafka_password      = random_password.kafka.result
   clickhouse_user     = "sentry"
-  clickhouse_password = "your_password_here"
-  redis_password      = "secretpassword"
-  postgres_password   = "your_password"
+  clickhouse_password = random_password.clickhouse.result
+  redis_password      = random_password.redis.result
+  postgres_password   = random_password.postgres.result
+}
+
+output "generated_passwords" {
+  description = "Map of generated passwords for services"
+  value = {
+    kafka_password      = random_password.kafka.result
+    clickhouse_password = random_password.clickhouse.result
+    redis_password      = random_password.redis.result
+    postgres_password   = random_password.postgres.result
+  }
+  sensitive = true  # Скрывает пароли в логах, но доступны через `terraform output`
 }

@@ -68,4 +68,5 @@ output "externalClickhouse" {
     username = local.clickhouse_user
     password = local.clickhouse_password
   }
+  sensitive = true
 }

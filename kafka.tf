@@ -202,4 +202,5 @@ output "externalKafka" {
       protocol = "SASL_PLAINTEXT"
     }
   }
+  sensitive = true
 }

@@ -60,4 +60,5 @@ output "externalPostgresql" {
     username = yandex_mdb_postgresql_user.postgresql_user.name
     database = yandex_mdb_postgresql_database.postgresql_database.name
   }
+  sensitive = true
 }

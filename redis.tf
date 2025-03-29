@@ -28,4 +28,5 @@ output "externalRedis" {
     port     = 6379
     password = local.redis_password
   }
+  sensitive = true
 }
