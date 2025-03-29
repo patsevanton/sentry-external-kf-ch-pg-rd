@@ -3,7 +3,7 @@ resource "yandex_mdb_clickhouse_cluster" "sentry" {
   name        = "sentry"
   environment = "PRODUCTION"
   network_id  = yandex_vpc_network.sentry.id
-  version     = 24.3
+  version     = 24.8
 
   clickhouse {
     resources {
