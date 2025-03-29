@@ -10,7 +10,7 @@ resource "yandex_mdb_kafka_cluster" "sentry" {
   ]
 
   config {
-    version       = "2.8"
+    version       = "3.5"
     brokers_count = 1
     zones = [
       yandex_vpc_subnet.sentry-a.zone,
