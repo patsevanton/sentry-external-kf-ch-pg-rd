@@ -1,5 +1,5 @@
 user:
-  password: "${user_password}"
+  password: "${sentry_admin_password}"
   email: "${user_email}"
 system:
   url: "${system_url}"

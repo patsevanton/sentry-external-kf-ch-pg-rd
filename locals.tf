@@ -28,6 +28,13 @@ resource "random_password" "postgres" {
   min_upper   = 4
 }
 
+resource "random_password" "sentry_admin_password" {
+  length      = 20
+  special     = false
+  min_numeric = 4
+  min_upper   = 4
+}
+
 locals {
   folder_id           = ""
   k8s_version         = "1.30"
@@ -35,6 +42,7 @@ locals {
   boot_disk           = 128 # GB
   memory_of_k8s_hosts = 20
   cores_of_k8s_hosts  = 4
+  sentry_admin_password = random_password.sentry_admin_password.result
   kafka_user          = "sentry"
   kafka_password      = random_password.kafka.result
   clickhouse_user     = "sentry"
