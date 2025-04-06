@@ -36,7 +36,7 @@ resource "random_password" "sentry_admin_password" {
 }
 
 locals {
-  folder_id           = ""
+  folder_id           = data.yandex_client_config.client.folder_id
   k8s_version         = "1.30"
   number_of_k8s_hosts = 3
   boot_disk           = 128 # GB
@@ -49,6 +49,8 @@ locals {
   clickhouse_password = random_password.clickhouse.result
   redis_password      = random_password.redis.result
   postgres_password   = random_password.postgres.result
+  filestore_bucket    = "sentry-bucket-apatsev-filestore-test"
+  nodestore_bucket    = "sentry-bucket-apatsev-nodestore-test"
 }
 
 output "generated_passwords" {

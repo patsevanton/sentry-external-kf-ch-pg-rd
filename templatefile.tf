@@ -20,6 +20,20 @@ locals {
       proxy_buffers_number = "16"
       proxy_buffer_size = "32k"
     }
+    filestore = {
+      s3 = {
+        accessKey = yandex_storage_bucket.filestore.access_key
+        secretKey  = yandex_storage_bucket.filestore.secret_key
+        bucketName  = yandex_storage_bucket.filestore.bucket
+      }
+    }
+    nodestore = {
+      s3 = {
+        accessKey = yandex_storage_bucket.nodestore.access_key
+        secretKey  = yandex_storage_bucket.nodestore.secret_key
+        bucketName  = yandex_storage_bucket.nodestore.bucket
+      }
+    }
     postgresql_enabled = false
     external_postgresql = {
       password = local.postgres_password

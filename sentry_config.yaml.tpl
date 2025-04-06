@@ -14,6 +14,25 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-body-size: "${ingress_annotations.proxy_body_size}"
     nginx.ingress.kubernetes.io/proxy-buffers-number: "${ingress_annotations.proxy_buffers_number}"
     nginx.ingress.kubernetes.io/proxy-buffer-size: "${ingress_annotations.proxy_buffer_size}"
+filestore:
+  backend: "s3"
+  s3:
+    accessKey: "${filestore.s3.accessKey}"
+    secretKey: "${filestore.s3.secretKey}"
+    region_name: ru-central1
+    bucketName: "${filestore.s3.bucketName}"
+    endpointUrl: "https://storage.yandexcloud.net"
+    location: "debug-files" # https://docs.sentry.io/platforms/android/data-management/debug-files/
+config:
+  sentryConfPy: |
+    SENTRY_NODESTORE = 'sentry_s3_nodestore.backend.S3NodeStorage'
+    SENTRY_NODESTORE_OPTIONS = {
+        'bucket_name': '"${nodestore.s3.bucketName}"',
+        'region': 'ru-central1',
+        'endpoint': 'https://storage.yandexcloud.net',
+        'aws_access_key_id': '"${nodestore.s3.accessKey}"',
+        'aws_secret_access_key': '"${nodestore.s3.secretKey}"',
+    }
 postgresql:
   enabled: ${postgresql_enabled}
 externalPostgresql:
