@@ -8,6 +8,9 @@ resource "yandex_storage_bucket" "filestore" {
   access_key = yandex_iam_service_account_static_access_key.filestore_bucket_key.access_key
   secret_key = yandex_iam_service_account_static_access_key.filestore_bucket_key.secret_key
   folder_id = local.folder_id
+  depends_on = [
+    yandex_resourcemanager_folder_iam_member.sa-admin-s3,
+  ]
 }
 
 output "access_key_for_filestore_bucket" {
