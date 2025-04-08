@@ -25,7 +25,7 @@ filestore:
     location: "debug-files" # https://docs.sentry.io/platforms/android/data-management/debug-files/
 config:
   sentryConfPy: |
-    SENTRY_NODESTORE = 'sentry_s3_nodestore.backend.S3NodeStorage'
+    SENTRY_NODESTORE = "sentry_s3_nodestore.backend.S3NodeStorage"
     SENTRY_NODESTORE_OPTIONS = {
         'bucket_name': '"${nodestore.s3.bucketName}"',
         'region': 'ru-central1',
