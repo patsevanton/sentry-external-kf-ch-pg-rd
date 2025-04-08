@@ -27,11 +27,11 @@ config:
   sentryConfPy: |
     SENTRY_NODESTORE = "sentry_s3_nodestore.backend.S3NodeStorage"
     SENTRY_NODESTORE_OPTIONS = {
-        'bucket_name': '"${nodestore.s3.bucketName}"',
-        'region': 'ru-central1',
-        'endpoint': "https://storage.yandexcloud.net",
-        'aws_access_key_id': '"${nodestore.s3.accessKey}"',
-        'aws_secret_access_key': '"${nodestore.s3.secretKey}"',
+        "bucket_name": "${nodestore.s3.bucketName}",
+        "region": 'ru-central1',
+        "endpoint": "https://storage.yandexcloud.net",
+        "aws_access_key_id": '"${nodestore.s3.accessKey}"',
+        "aws_secret_access_key": '"${nodestore.s3.secretKey}"',
     }
 postgresql:
   enabled: ${postgresql_enabled}
