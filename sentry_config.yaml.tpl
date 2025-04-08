@@ -29,7 +29,7 @@ config:
     SENTRY_NODESTORE_OPTIONS = {
         'bucket_name': '"${nodestore.s3.bucketName}"',
         'region': 'ru-central1',
-        'endpoint': 'https://storage.yandexcloud.net',
+        'endpoint': "https://storage.yandexcloud.net",
         'aws_access_key_id': '"${nodestore.s3.accessKey}"',
         'aws_secret_access_key': '"${nodestore.s3.secretKey}"',
     }

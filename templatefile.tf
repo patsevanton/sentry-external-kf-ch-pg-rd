@@ -2,6 +2,10 @@ resource "null_resource" "write_sentry_config" {
   provisioner "local-exec" {
     command = "echo '${local.sentry_config}' > sentry_config.yaml"
   }
+
+  triggers = {
+    sentry_config = local.sentry_config
+  }
 }
 
 
