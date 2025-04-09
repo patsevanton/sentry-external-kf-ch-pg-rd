@@ -38,3 +38,4 @@ terraform.rc
 .terraform.lock.hcl
 sentry_config.yaml
 .idea
+example-python/venv/*

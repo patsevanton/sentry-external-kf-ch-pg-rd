@@ -13,4 +13,11 @@ helm upgrade --install sentry -n sentry sentry/sentry --version 26.15.1 -f sentr
 ```
 
 
-ModuleNotFoundError: No module named 'sentry_s3_nodestore'
+Run example python
+```shell
+cd example-python
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade sentry-sdk
+python3 main.py
+```
