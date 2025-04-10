@@ -21,3 +21,8 @@ source venv/bin/activate
 pip install --upgrade sentry-sdk
 python3 main.py
 ```
+
+При указании порта 6380 для redis получаю ошибку
+```
+sentry.exceptions.InvalidConfiguration: Error 111 connecting to rc1a-xxxx.mdb.yandexcloud.net:6380. Connection refused. 
+```
