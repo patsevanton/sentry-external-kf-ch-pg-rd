@@ -56,7 +56,7 @@ locals {
       cluster = [
         for host in yandex_mdb_kafka_cluster.sentry.host : {
           host = host.name
-          port = 9092
+          port = 9091
         } if host.role == "KAFKA"
       ]
       sasl = {
@@ -65,7 +65,7 @@ locals {
         password  = local.kafka_password
       }
       security = {
-        protocol = "SASL_PLAINTEXT"
+        protocol = "SASL_SSL"
       }
     }
     kafka_enabled = false
