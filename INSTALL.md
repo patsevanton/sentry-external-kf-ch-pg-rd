@@ -22,7 +22,8 @@ pip install --upgrade sentry-sdk
 python3 main.py
 ```
 
-При указании порта 6380 для redis получаю ошибку
+При указании порта 6380 для redis получаю ошибку. Нужно включить настройку `Поддержка TLS`
 ```
-sentry.exceptions.InvalidConfiguration: Error 111 connecting to rc1a-xxxx.mdb.yandexcloud.net:6380. Connection refused. 
+resource "yandex_mdb_redis_cluster" "<имя_кластера>" {
+  tls_enabled         = true
 ```
