@@ -50,7 +50,7 @@ locals {
     external_redis = {
       password = local.redis_password
       host     = yandex_mdb_redis_cluster.sentry.host[0].fqdn
-      port     = 6379
+      port     = 6380
     }
     external_kafka = {
       cluster = [

@@ -3,6 +3,7 @@ resource "yandex_mdb_redis_cluster" "sentry" {
   folder_id   = local.folder_id
   network_id  = yandex_vpc_network.sentry.id
   environment = "PRODUCTION"
+  tls_enabled = true
 
   config {
     password         = local.redis_password

@@ -54,6 +54,7 @@ externalRedis:
   password: "${external_redis.password}"
   host: "${external_redis.host}"
   port: ${external_redis.port}
+  ssl: true
 externalKafka:
   cluster:
 %{ for kafka_host in external_kafka.cluster ~}
