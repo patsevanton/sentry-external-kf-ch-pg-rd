@@ -48,6 +48,7 @@ externalPostgresql:
   port: ${external_postgresql.port}
   username: "${external_postgresql.username}"
   database: "${external_postgresql.database}"
+  sslMode: require
 redis:
   enabled: ${redis_enabled}
 externalRedis:
