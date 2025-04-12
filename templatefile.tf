@@ -8,10 +8,9 @@ resource "null_resource" "write_sentry_config" {
   }
 }
 
-
 locals {
   sentry_config = templatefile("sentry_config.yaml.tpl", {
-    sentry_admin_password  = local.sentry_admin_password # todo use random password
+    sentry_admin_password  = local.sentry_admin_password
     user_email     = "admin@sentry.apatsev.org.ru"
     system_url     = "http://sentry.apatsev.org.ru"
     nginx_enabled  = false
