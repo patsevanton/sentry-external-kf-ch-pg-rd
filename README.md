@@ -16,7 +16,7 @@
 - Подключение Kafka, Redis, ClickHouse, Postgres через SSL (можно отключить).
 - Динамическое формирование values для helm чарта sentry
 
-## Быстрый старт
+## Быстрый старт в yandex cloud
 
 - Клонируем репозиторий https://github.com/patsevanton/sentry-external-kf-ch-pg-rd
 - Меняем dns зону и dns запись в файле ip-dns.tf
