@@ -33,23 +33,25 @@ ingress:
 
 # Настройки файлового хранилища
 filestore:
-  backend: "s3"
+  backend: "s3"  # Тип backend для хранения файлов — S3
   s3:
-    accessKey: "${filestore.s3.accessKey}"
-    secretKey: "${filestore.s3.secretKey}"
-    region_name: ru-central1
-    bucketName: "${filestore.s3.bucketName}"
-    endpointUrl: "https://storage.yandexcloud.net"
-    location: "debug-files" # https://docs.sentry.io/platforms/android/data-management/debug-files/
+    accessKey: "${filestore.s3.accessKey}"          # Access Key от S3
+    secretKey: "${filestore.s3.secretKey}"          # Secret Key от S3
+    region_name: ru-central1                        # Регион — Яндекс.Облако
+    bucketName: "${filestore.s3.bucketName}"        # Название бакета
+    endpointUrl: "https://storage.yandexcloud.net"  # Endpoint для доступа к S3
+    location: "debug-files"                         # Папка для хранения debug-файлов
+
+# Дополнительная конфигурация для Sentry
 config:
   sentryConfPy: |
-    SENTRY_NODESTORE = "sentry_s3_nodestore.backend.S3NodeStorage"
+    SENTRY_NODESTORE = "sentry_s3_nodestore.backend.S3NodeStorage"  # Тип NodeStore — S3
     SENTRY_NODESTORE_OPTIONS = {
-        "bucket_name": "${nodestore.s3.bucketName}",
-        "region": "ru-central1",
-        "endpoint": "https://storage.yandexcloud.net",
-        "aws_access_key_id": "${nodestore.s3.accessKey}",
-        "aws_secret_access_key": "${nodestore.s3.secretKey}",
+        "bucket_name": "${nodestore.s3.bucketName}",                # Название бакета
+        "region": "ru-central1",                                    # Регион — Яндекс.Облако
+        "endpoint": "https://storage.yandexcloud.net",              # Endpoint
+        "aws_access_key_id": "${nodestore.s3.accessKey}",           # Access Key
+        "aws_secret_access_key": "${nodestore.s3.secretKey}",       # Secret Key
     }
 
 # Встроенная PostgreSQL база данных
