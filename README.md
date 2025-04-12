@@ -18,7 +18,9 @@
 
 ## Быстрый старт
 
-Меняем dns зону и dns запись в файле ip-dns.tf
+- Клонируем репозиторий https://github.com/patsevanton/sentry-external-kf-ch-pg-rd
+- Меняем dns зону и dns запись в файле ip-dns.tf
+- Меняем user_email и system_url в файле templatefile.tf
 
 Запускаем инфраструктуру:
 

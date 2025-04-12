@@ -27,8 +27,10 @@ resource "yandex_mdb_redis_cluster" "sentry" {
 # Вывод внешних параметров подключения к Redis
 output "externalRedis" {
   value = {
-    host     = yandex_mdb_redis_cluster.sentry.host[0].fqdn  # FQDN первого хоста Redis
-    port     = 6379  # Порт подключения Redis
+    # host     = yandex_mdb_redis_cluster.sentry.host[0].fqdn  # FQDN первого хоста Redis
+    # Адрес хоста для подключения (с динамическим именем хоста на основе ID кластера)
+    host     = "c-${yandex_mdb_redis_cluster.sentry.id}.rw.mdb.yandexcloud.net"
+    port     = 6380  # Порт Redis SSL
     password = local.redis_password  # Пароль подключения
   }
   sensitive = true  # Значение помечено как чувствительное

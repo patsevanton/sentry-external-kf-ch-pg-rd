@@ -82,7 +82,7 @@ locals {
     # Настройки подключения к внешнему Redis
     external_redis = {
       password = local.redis_password
-      host     = yandex_mdb_redis_cluster.sentry.host[0].fqdn
+      host     = "c-${yandex_mdb_redis_cluster.sentry.id}.rw.mdb.yandexcloud.net"
       port     = 6380 # 6380 — если используется SSL, иначе 6379
     }
 
