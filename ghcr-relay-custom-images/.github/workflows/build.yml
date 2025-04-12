@@ -1,0 +1,41 @@
+name: Build and Push Sentry Docker Images
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        RELAY_VERSION: [25.2.0, 25.3.0]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg RELAY_IMAGE=getsentry/relay:${{ matrix.RELAY_VERSION }} \
+            -t $REGISTRY/${{ env.IMAGE_NAME }}:${{ matrix.RELAY_VERSION }} .
+
+      - name: Push Docker image
+        run: |
+          docker push $REGISTRY/${{ env.IMAGE_NAME }}:${{ matrix.RELAY_VERSION }}

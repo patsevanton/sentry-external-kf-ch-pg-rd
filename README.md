@@ -93,7 +93,17 @@ yc managed-kubernetes cluster get-credentials --id xxx --external --force
 
 Проверяем сгенерированный конфиг values_sentry.yaml из шаблона
 
-Деплоим Sentry в кластер через Helm
+## Собираем кастомные image с сертификатом и sentry-s3-nodestore модулем
+Код сборок находится либо в этих репозиториях:
+ - https://github.com/patsevanton/ghcr-relay-custom-images
+ - https://github.com/patsevanton/ghcr-snuba-custom-images
+ - https://github.com/patsevanton/ghcr-sentry-custom-images
+ - либо в https://github.com/patsevanton/sentry-external-kf-ch-pg-rd
+
+В файле enhance-image.sh происходит добавление сертификатов и установка sentry-s3-nodestore.
+Сертификаты устанавливаются в python модуль certifi
+
+## Деплоим Sentry в кластер через Helm
 ```shell
 kubectl create namespace test
 helm repo add sentry https://sentry-kubernetes.github.io/charts
