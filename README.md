@@ -13,7 +13,7 @@
 - Используются Kafka, ClickHouse вне Kubernetes
 - Для Nodestore используется S3
 - Добавлен пример сборки кастомных image sentry, snuba, replay с сертификатом от yandex
-- Подключение Kafka, Redis, ClickHouse, Postgres через SSL.
+- Подключение Kafka, Redis, ClickHouse, Postgres через SSL (можно отключить).
 - Динамическое формирование values для helm чарта sentry
 
 ## Быстрый старт
