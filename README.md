@@ -125,7 +125,6 @@ sentryConfPy: |
 - либо в https://github.com/patsevanton/sentry-external-kf-ch-pg-rd
 
 
-
 ## Sentry Kubernetes Hook: как это работает
 Параметр [asHook](https://github.com/sentry-kubernetes/charts/blob/develop/charts/sentry/values.yaml#L31C1-L31C13) в Sentry Helm chart указывает, что основные контейнерами и миграции должны запуститься перед основными контейнерами.
 Это нужно для первого запуска Sentry. После его можно отключить.
