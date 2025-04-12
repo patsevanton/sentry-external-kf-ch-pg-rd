@@ -77,13 +77,6 @@ sentryConfPy: |
     - `SENTRY_EVENT_RETENTION_DAYS`
 - Как шаблон превращается в финальный конфиг (через `templatefile()` в Terraform)
 
-
-## Пример использования (`example-python`)
-
-- Что лежит в `example-python/`
-- Как подключить Sentry SDK
-- Простой пример выброса exception’а:
-
 ## Как всё это собрать и запустить
 Запускаем инфраструктуру:
 
@@ -106,4 +99,18 @@ kubectl create namespace test
 helm repo add sentry https://sentry-kubernetes.github.io/charts
 helm repo update
 helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f values_sentry.yaml
+```
+
+## Пример использования (`example-python`)
+
+- Что лежит в `example-python/`
+- Как подключить Sentry SDK
+- Простой пример выброса exception’а:
+  Run example python
+```shell
+cd example-python
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade sentry-sdk
+python3 main.py
 ```
