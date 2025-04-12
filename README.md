@@ -114,8 +114,9 @@ sentryConfPy: |
 - В финальный конфиг через terraform функцию `templatefile()` превращается в values_sentry.yaml
 - В файлах `values_sentry.yaml.tpl` и `templatefile.tf` содержится разные настройки.
 
-## Собираем кастомные image с сертификатом и sentry-s3-nodestore модулем
-Вы можете использовать docker image по умолчанию или собрать свои image.
+## Собираем кастомные image
+Вы можете использовать docker image по умолчанию или собрать image.
+В этих кастомных image происходит установка сертификатов и установка sentry-s3-nodestore модуля.
 Код сборок находится либо в этих репозиториях:
 - https://github.com/patsevanton/ghcr-relay-custom-images
 - https://github.com/patsevanton/ghcr-snuba-custom-images
