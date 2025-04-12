@@ -199,16 +199,16 @@ output "externalKafka" {
     cluster = [
       for host in yandex_mdb_kafka_cluster.sentry.host : {
         host = host.name
-        port = 9092
+        port = 9091 # 9091 — если используется SSL, иначе 9092
       } if host.role == "KAFKA"
     ]
     sasl = {
-      mechanism = "SCRAM-SHA-512"
+      mechanism = "SCRAM-SHA-512" # Механизм аутентификации (например, PLAIN, SCRAM)
       username  = local.kafka_user
       password  = local.kafka_password
     }
     security = {
-      protocol = "SASL_PLAINTEXT"
+      protocol = "SASL_SSL" # Использовать SASL_SSL (или SASL_PLAINTEXT при отсутствии SSL)
     }
   }
   sensitive = true
