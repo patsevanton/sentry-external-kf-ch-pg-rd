@@ -111,12 +111,10 @@ helm repo update
 helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f values_sentry.yaml
 ```
 
-## Пример использования (`example-python`)
+## Простой пример отправки exception
 
-- Что лежит в `example-python/`
-- Как подключить Sentry SDK
-- Простой пример выброса exception’а:
-  Run example python
+- Заходим в директорию `example-python`
+- Запускаем python код
 ```shell
 cd example-python
 python3 -m venv venv
