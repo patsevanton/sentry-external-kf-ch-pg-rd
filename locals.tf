@@ -44,7 +44,6 @@ resource "random_password" "sentry_admin_password" {
 # Локальные переменные для настройки инфраструктуры
 locals {
   folder_id           = data.yandex_client_config.client.folder_id  # ID папки в Yandex Cloud
-  boot_disk           = 128                                         # Размер boot-диска (в ГБ)
   sentry_admin_password = random_password.sentry_admin_password.result # Сгенерированный пароль администратора Sentry
   kafka_user          = "sentry"                                    # Имя пользователя для Kafka
   kafka_password      = random_password.kafka.result                # Сгенерированный пароль для Kafka
