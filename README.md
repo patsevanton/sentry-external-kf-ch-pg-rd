@@ -45,8 +45,11 @@ helm repo update
 helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f values_sentry.yaml
 ```
 
-## Простой пример отправки exception
+## Паролей
+Пароли генерируются динамически, но вы можете указать свои пароль в local.tf
+Их можно получить посмотрев values_sentry.yaml или используя terraform output
 
+## Простой пример отправки exception
 - Заходим в директорию `example-python`
 - Меняем dsn в main.py
 - Запускаем python код
@@ -60,23 +63,19 @@ python3 main.py
 
 ## Почему важно выносить Kafka, Redis, ClickHouse, Postgres вне Kubernetes
 Плюсы такого подхода:
-
 * Масштабируемость
 * Изоляция ресурсов
 * Более надежное хранилище
-
 Минусы/предостережения:
-
 * Логирование и трассировка проблем становится чуть сложнее
 * Требует аккуратной настройки переменных и IAM-доступов (особенно к S3)
 
 ## Подключение Kafka, Redis, ClickHouse, Postgres через SSL
 В этом посте в отличие от предыдущего будет подключение Kafka, Redis, Postgres через SSL.
 Для подключения ClickHouse по SSL ждем вот этого [PR](https://github.com/sentry-kubernetes/charts/pull/1671).
-В terraform коде в комментариях указано как настраивать SSL.
+В terraform коде в комментариях указано как настраивать SSL и как отключать SSL
 
 ## Структура Terraform [проекта](https://github.com/patsevanton/sentry-external-kf-ch-pg-rd)
-
 - Список и краткое описание ключевых файлов в [репо](https://github.com/patsevanton/sentry-external-kf-ch-pg-rd):
     - `example-python` — демонстрация, как отправлять ошибки в Sentry из Python
     - `clickhouse.tf` — managed ClickHouse (Yandex Cloud)
@@ -92,8 +91,8 @@ python3 main.py
     - `versions.tf` – задаёт версии Terraform и провайдеров, необходимых для работы проекта.
 
 ## Хранение основных данных (Nodestore) в S3
-Отмечу отдельно что основные данные (Nodestore) хранятся в S3
-Файл `s3_nodestore.tf` — хранилище blob-данных managed S3 (Yandex Cloud)
+Отмечу отдельно что основные данные (Nodestore) хранятся в S3, так как хранение в PostgreSQL приводит со временем к проблемам и медленной работе Sentry.
+Файл `s3_nodestore.tf` — хранилище blob-данных managed S3 (Yandex Cloud).
 В файле values_sentry.yaml указание где хранить Nodestore указывается так
 ```
 sentryConfPy: |
@@ -107,14 +106,13 @@ sentryConfPy: |
   }
 ```
 
-## Динамическое формирование файла values.yaml
-## Формирование values.yaml для Sentry
-
+## Динамическое формирование файла values.yaml для helm чарта Sentry
 - Файл values.yaml (`values_sentry.yaml`) формируется используя шаблон `values_sentry.yaml.tpl` и `templatefile.tf`
-- Как шаблон превращается в финальный конфиг (через `templatefile()` в Terraform)
-
+- В финальный конфиг через terraform функцию `templatefile()` превращается в values_sentry.yaml
+- В файлах `values_sentry.yaml.tpl` и `templatefile.tf` содержится разные настройки.
 
 ## Собираем кастомные image с сертификатом и sentry-s3-nodestore модулем
+Вы можете использовать docker image по умолчанию или собрать свои image.
 Код сборок находится либо в этих репозиториях:
 - https://github.com/patsevanton/ghcr-relay-custom-images
 - https://github.com/patsevanton/ghcr-snuba-custom-images
@@ -123,9 +121,6 @@ sentryConfPy: |
 
 В файле enhance-image.sh происходит добавление сертификатов и установка sentry-s3-nodestore.
 Сертификаты устанавливаются в python модуль certifi
-
-## Получение паролей
-Пароли можно получить посмотрев values_sentry.yaml или используя terraform output
 
 ## Планы на будущие посты о Sentry
 - Использовать Elasticsearch для nodestore
