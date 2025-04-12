@@ -1,4 +1,4 @@
-# **Sentry с внешними Kafka, ClickHouse, Postgres, Redis и Nodestore в S3**
+# **Запускаем Sentry в Kubernetes в Яндекс облаке и храним Nodestore в S3**
 
 ## Кратко о Sentry: что это, зачем он нужен
 
@@ -45,13 +45,14 @@ helm repo update
 helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f values_sentry.yaml
 ```
 
-## Паролей
+## Пароли
 Пароли генерируются динамически, но вы можете указать свои пароль в local.tf
 Их можно получить посмотрев values_sentry.yaml или используя terraform output
 
 ## Простой пример отправки exception
+- Создаем проект в Sentry, выбираем python, копируем DSN
 - Заходим в директорию `example-python`
-- Меняем dsn в main.py
+- Меняем dsn в main.py (Сам DSN лучше хранить в секретах (либо брать из env))
 - Запускаем python код
 ```shell
 cd example-python
@@ -122,5 +123,9 @@ sentryConfPy: |
 
 В файле enhance-image.sh происходит добавление сертификатов и установка sentry-s3-nodestore.
 Сертификаты устанавливаются в python модуль certifi
+
+## Планы на следующие посты про Sentry
+- Использовать Elasticsearch для NodeStore
+- Расписать про масштабируемость
 
 При публикации опубликовать исходный terraform код

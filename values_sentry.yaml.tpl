@@ -56,7 +56,7 @@ config:
 
 # Встроенная PostgreSQL база данных
 postgresql:
-  enabled: ${postgresql_enabled}  # Использовать ли встроенный PostgreSQL
+  enabled: ${postgresql_enabled}  # Использовать ли встроенный PostgreSQL не для NodeStore, а для нужд самой Sentry
 
 # Конфигурация внешней PostgreSQL базы данных
 externalPostgresql:
