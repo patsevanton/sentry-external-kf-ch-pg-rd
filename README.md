@@ -26,6 +26,42 @@
 - Подключение Kafka, Redis, ClickHouse, Postgres через SSL.
 - Динамическое формирование values для helm чарта sentry
 
+## Быстрый старт
+Запускаем инфраструктуру:
+
+```shell
+export YC_FOLDER_ID='ваша подсеть'
+terraform init
+terraform apply
+```
+
+Формируем kubeconfig для кластера k8s с указанным ID (xxx) в Yandex Cloud, используя внешний IP (--external)
+```shell
+yc managed-kubernetes cluster get-credentials --id xxx --external --force
+```
+
+Проверяем сгенерированный конфиг values_sentry.yaml из шаблона
+
+## Деплоим Sentry в кластер через Helm
+```shell
+kubectl create namespace test
+helm repo add sentry https://sentry-kubernetes.github.io/charts
+helm repo update
+helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f values_sentry.yaml
+```
+
+## Простой пример отправки exception
+
+- Заходим в директорию `example-python`
+- Запускаем python код
+```shell
+cd example-python
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade sentry-sdk
+python3 main.py
+```
+
 ## Почему важно выносить Kafka, Redis, ClickHouse, Postgres вне Kubernetes
 Плюсы такого подхода:
 
@@ -80,51 +116,16 @@ sentryConfPy: |
 - Файл values.yaml (`values_sentry.yaml`) формируется используя шаблон `values_sentry.yaml.tpl` и `templatefile.tf`
 - Как шаблон превращается в финальный конфиг (через `templatefile()` в Terraform)
 
-## Как всё это собрать и запустить
-Запускаем инфраструктуру:
-
-```shell
-export YC_FOLDER_ID='ваша подсеть'
-terraform init
-terraform apply
-```
-
-Формируем kubeconfig для кластера k8s с указанным ID (xx) в Yandex Cloud, используя внешний IP (--external)
-```shell
-yc managed-kubernetes cluster get-credentials --id xxx --external --force
-```
-
-Проверяем сгенерированный конфиг values_sentry.yaml из шаблона
 
 ## Собираем кастомные image с сертификатом и sentry-s3-nodestore модулем
 Код сборок находится либо в этих репозиториях:
- - https://github.com/patsevanton/ghcr-relay-custom-images
- - https://github.com/patsevanton/ghcr-snuba-custom-images
- - https://github.com/patsevanton/ghcr-sentry-custom-images
- - либо в https://github.com/patsevanton/sentry-external-kf-ch-pg-rd
+- https://github.com/patsevanton/ghcr-relay-custom-images
+- https://github.com/patsevanton/ghcr-snuba-custom-images
+- https://github.com/patsevanton/ghcr-sentry-custom-images
+- либо в https://github.com/patsevanton/sentry-external-kf-ch-pg-rd
 
 В файле enhance-image.sh происходит добавление сертификатов и установка sentry-s3-nodestore.
 Сертификаты устанавливаются в python модуль certifi
 
-## Деплоим Sentry в кластер через Helm
-```shell
-kubectl create namespace test
-helm repo add sentry https://sentry-kubernetes.github.io/charts
-helm repo update
-helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f values_sentry.yaml
-```
-
 ## Получение паролей
 Пароли можно получить посмотрев values_sentry.yaml или используя terraform output
-
-## Простой пример отправки exception
-
-- Заходим в директорию `example-python`
-- Запускаем python код
-```shell
-cd example-python
-python3 -m venv venv
-source venv/bin/activate
-pip install --upgrade sentry-sdk
-python3 main.py
-```
