@@ -67,9 +67,9 @@ sentryConfPy: |
   }
 ```
 
-## Конфигурация Sentry
+## Формирование values.yaml для Sentry
 
-- Как конфигурируется Sentry через `sentry_config.yaml.tpl`
+- Файл values.yaml (`sentry_config.yaml`) формируется используя шаблон `sentry_config.yaml.tpl` и `templatefile.tf`
 - Примеры параметров:
     - `SENTRY_REDIS_HOST`
     - `SENTRY_DB_NAME`
