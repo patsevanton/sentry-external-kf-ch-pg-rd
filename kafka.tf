@@ -1,7 +1,7 @@
 # Создание Kafka-кластера в Yandex Cloud
 # Здесь определяется Kafka кластер с именем "sentry" в Yandex Cloud с необходимыми параметрами конфигурации.
 resource "yandex_mdb_kafka_cluster" "sentry" {
-  folder_id   = local.folder_id                      # ID папки в Yandex Cloud
+  folder_id   = coalesce(local.folder_id, data.yandex_client_config.client.folder_id) # ID folder в Yandex Cloud
   name        = "sentry"                             # Имя кластера
   environment = "PRODUCTION"                         # Среда (может быть PRESTABLE/PRODUCTION)
   network_id  = yandex_vpc_network.sentry.id         # Сеть VPC, в которой будет размещён кластер

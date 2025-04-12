@@ -1,6 +1,6 @@
 # Создание сервисного аккаунта для управления Kubernetes
 resource "yandex_iam_service_account" "sa-k8s-editor" {
-  folder_id = coalesce(local.folder_id, data.yandex_client_config.client.folder_id)  # ID папки, в которой создается аккаунт
+  folder_id = coalesce(local.folder_id, data.yandex_client_config.client.folder_id) # ID folder в Yandex Cloud
   name      = "sa-k8s-editor"  # Имя сервисного аккаунта
 }
 

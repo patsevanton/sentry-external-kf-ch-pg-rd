@@ -1,7 +1,7 @@
 # Создание кластера Redis в Yandex Managed Service for Redis
 resource "yandex_mdb_redis_cluster" "sentry" {
   name        = "sentry"  # Название кластера
-  folder_id   = local.folder_id  # Идентификатор папки в Yandex Cloud
+  folder_id   = coalesce(local.folder_id, data.yandex_client_config.client.folder_id) # ID folder в Yandex Cloud
   network_id  = yandex_vpc_network.sentry.id  # ID сети VPC
   environment = "PRODUCTION"  # Среда (может быть PRODUCTION или PRESTABLE)
   tls_enabled = true  # Включение TLS для защищённого подключения

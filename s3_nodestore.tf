@@ -17,7 +17,7 @@ resource "yandex_storage_bucket" "nodestore" {
   secret_key = yandex_iam_service_account_static_access_key.nodestore_bucket_key.secret_key
 
   # Идентификатор папки, в которой будет создан бакет
-  folder_id = local.folder_id
+  folder_id = coalesce(local.folder_id, data.yandex_client_config.client.folder_id) # ID folder в Yandex Cloud
 
   # Зависимость от другого ресурса, чтобы этот бакет был создан после предоставления прав сервисному аккаунту
   depends_on = [

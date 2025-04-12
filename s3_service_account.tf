@@ -7,7 +7,7 @@ resource "yandex_iam_service_account" "sa-s3" {
 # Присваивание роли IAM для сервисного аккаунта
 resource "yandex_resourcemanager_folder_iam_member" "sa-admin-s3" {
   # Идентификатор папки, в которой будет назначена роль
-  folder_id = local.folder_id
+  folder_id = coalesce(local.folder_id, data.yandex_client_config.client.folder_id) # ID folder в Yandex Cloud
 
   # Роль, которую мы назначаем сервисному аккаунту
   role      = "storage.admin"

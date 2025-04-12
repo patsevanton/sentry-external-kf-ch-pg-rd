@@ -17,7 +17,7 @@ resource "yandex_storage_bucket" "filestore" {
   secret_key = yandex_iam_service_account_static_access_key.filestore_bucket_key.secret_key
 
   # ID папки, в которой будет размещен бакет
-  folder_id = local.folder_id
+  folder_id = coalesce(local.folder_id, data.yandex_client_config.client.folder_id) # ID folder в Yandex Cloud
 
   # Указываем зависимость от ресурса IAM-члена, который должен быть создан до бакета
   depends_on = [

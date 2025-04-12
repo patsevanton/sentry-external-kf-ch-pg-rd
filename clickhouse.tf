@@ -1,6 +1,6 @@
 # Создание кластера ClickHouse в Яндекс Облаке
 resource "yandex_mdb_clickhouse_cluster" "sentry" {
-  folder_id   = local.folder_id                # ID папки в Yandex Cloud
+  folder_id   = coalesce(local.folder_id, data.yandex_client_config.client.folder_id) # ID folder в Yandex Cloud
   name        = "sentry"                       # Название кластера
   environment = "PRODUCTION"                   # Окружение (может быть также PRESTABLE)
   network_id  = yandex_vpc_network.sentry.id   # ID VPC-сети
@@ -65,7 +65,7 @@ resource "yandex_mdb_clickhouse_cluster" "sentry" {
     update = "60m"
     delete = "60m"
   }
-  
+
 }
 
 # Вывод конфиденциальной информации о ClickHouse-кластере
