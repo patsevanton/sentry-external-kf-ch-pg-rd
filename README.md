@@ -1,4 +1,4 @@
-# **"Sentry с внешними Kafka, ClickHouse, Postgres, Redis и Nodestore в S3"**
+# **Sentry с внешними Kafka, ClickHouse, Postgres, Redis и Nodestore в S3**
 
 ## Кратко о Sentry: что это, зачем он нужен
 
