@@ -1,36 +1,41 @@
+# Создание Kafka-кластера в Yandex Cloud
 resource "yandex_mdb_kafka_cluster" "sentry" {
-  folder_id   = local.folder_id
-  name        = "sentry"
-  environment = "PRODUCTION"
-  network_id  = yandex_vpc_network.sentry.id
-  subnet_ids = [
+  folder_id   = local.folder_id                      # ID папки в Yandex Cloud
+  name        = "sentry"                             # Имя кластера
+  environment = "PRODUCTION"                         # Среда (может быть PRESTABLE/PRODUCTION)
+  network_id  = yandex_vpc_network.sentry.id         # Сеть VPC, в которой будет размещён кластер
+
+  subnet_ids = [                                     # Список подсетей в разных зонах доступности
     yandex_vpc_subnet.sentry-a.id,
     yandex_vpc_subnet.sentry-b.id,
     yandex_vpc_subnet.sentry-d.id
   ]
 
   config {
-    version       = "3.5"
-    brokers_count = 1
-    zones = [
+    version       = "3.5"                            # Версия Kafka
+    brokers_count = 1                                # Кол-во брокеров в каждой зоне
+    zones = [                                        # Зоны размещения брокеров
       yandex_vpc_subnet.sentry-a.zone,
       yandex_vpc_subnet.sentry-b.zone,
       yandex_vpc_subnet.sentry-d.zone
     ]
-    assign_public_ip = false
-    schema_registry  = false
+    assign_public_ip = false                         # Не присваивать публичный IP
+    schema_registry  = false                         # Без поддержки Schema Registry
+
     kafka {
       resources {
-        resource_preset_id = "s2.micro" # s3-c2-m8
-        disk_type_id       = "network-ssd"
-        disk_size          = 200
+        resource_preset_id = "s2.micro"              # Тип инстанса
+        disk_type_id       = "network-ssd"           # Тип диска
+        disk_size          = 200                     # Размер диска в ГБ
       }
     }
   }
 }
 
+# Список топиков Kafka с параметрами
 locals {
   kafka_topics = {
+    # Каждый ключ — имя топика. Значение — карта опций конфигурации (может быть пустой)
     "events" = {},
     "event-replacements" = {},
     "snuba-commit-log" = {
@@ -136,13 +141,14 @@ locals {
   }
 }
 
+# Создание Kafka-топиков на основе описания в locals.kafka_topics
 resource "yandex_mdb_kafka_topic" "topics" {
-  for_each = local.kafka_topics
+  for_each = local.kafka_topics                      # Итерируемся по каждому топику
 
   cluster_id         = yandex_mdb_kafka_cluster.sentry.id
-  name               = each.key
-  partitions         = 1
-  replication_factor = 1
+  name               = each.key                      # Имя топика
+  partitions         = 1                             # Кол-во партиций
+  replication_factor = 1                             # Фактор репликации (можно увеличить для отказоустойчивости)
 
   topic_config {
     cleanup_policy        = lookup(each.value, "cleanup_policy", null)
@@ -156,27 +162,29 @@ resource "yandex_mdb_kafka_topic" "topics" {
   }
 }
 
+# Локальная переменная со списком имен всех топиков (используется для прав доступа)
 locals {
   kafka_permissions = keys(local.kafka_topics)
 }
 
+# Создание пользователя Kafka и назначение прав доступа к каждому топику
 resource "yandex_mdb_kafka_user" "sentry" {
   cluster_id = yandex_mdb_kafka_cluster.sentry.id
-  name       = local.kafka_user
-  password   = local.kafka_password
+  name       = local.kafka_user                     # Имя пользователя
+  password   = local.kafka_password                 # Пароль пользователя
 
+  # Назначение роли "консьюмер" для каждого топика
   dynamic "permission" {
     for_each = toset(local.kafka_permissions)
-
     content {
       topic_name = permission.value
       role       = "ACCESS_ROLE_CONSUMER"
     }
   }
 
+  # Назначение роли "продюсер" для каждого топика
   dynamic "permission" {
     for_each = toset(local.kafka_permissions)
-
     content {
       topic_name = permission.value
       role       = "ACCESS_ROLE_PRODUCER"
@@ -184,6 +192,7 @@ resource "yandex_mdb_kafka_user" "sentry" {
   }
 }
 
+# Вывод Kafka-подключения в виде структурированных данных (sensitive — чувствительные данные скрываются)
 output "externalKafka" {
   description = "Kafka connection details in structured format"
   value = {

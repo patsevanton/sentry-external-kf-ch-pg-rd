@@ -1,15 +1,18 @@
+# Создание сервисного аккаунта для управления Kubernetes
 resource "yandex_iam_service_account" "sa-k8s-editor" {
-  folder_id = coalesce(local.folder_id, data.yandex_client_config.client.folder_id)
-  name      = "sa-k8s-editor"
+  folder_id = coalesce(local.folder_id, data.yandex_client_config.client.folder_id)  # ID папки, в которой создается аккаунт
+  name      = "sa-k8s-editor"  # Имя сервисного аккаунта
 }
 
+# Назначение роли "editor" сервисному аккаунту на уровне папки
 resource "yandex_resourcemanager_folder_iam_member" "sa-k8s-editor-permissions" {
   folder_id = coalesce(local.folder_id, data.yandex_client_config.client.folder_id)
-  role      = "editor"
+  role      = "editor"  # Роль, дающая полные права на ресурсы папки
 
-  member = "serviceAccount:${yandex_iam_service_account.sa-k8s-editor.id}"
+  member = "serviceAccount:${yandex_iam_service_account.sa-k8s-editor.id}"  # Назначаемый участник
 }
 
+# Пауза, чтобы изменения IAM успели примениться до создания кластера
 resource "time_sleep" "wait_sa" {
   create_duration = "20s"
   depends_on      = [
@@ -18,60 +21,57 @@ resource "time_sleep" "wait_sa" {
   ]
 }
 
+# Создание Kubernetes-кластера в Yandex Cloud
 resource "yandex_kubernetes_cluster" "sentry" {
-  name       = "sentry"
+  name       = "sentry"  # Имя кластера
   folder_id  = coalesce(local.folder_id, data.yandex_client_config.client.folder_id)
-  network_id = yandex_vpc_network.sentry.id
+  network_id = yandex_vpc_network.sentry.id  # Сеть, к которой подключается кластер
 
   master {
-    version = "1.30"
+    version = "1.30"  # Версия Kubernetes мастера
     zonal {
-      zone      = yandex_vpc_subnet.sentry-a.zone
-      subnet_id = yandex_vpc_subnet.sentry-a.id
+      zone      = yandex_vpc_subnet.sentry-a.zone  # Зона размещения мастера
+      subnet_id = yandex_vpc_subnet.sentry-a.id     # Подсеть для мастера
     }
 
-    public_ip = true
+    public_ip = true  # Включение публичного IP для доступа к мастеру
   }
+
+  # Сервисный аккаунт для управления кластером и нодами
   service_account_id      = yandex_iam_service_account.sa-k8s-editor.id
   node_service_account_id = yandex_iam_service_account.sa-k8s-editor.id
-  release_channel         = "STABLE"
-  // to keep permissions of service account on destroy
-  // until cluster will be destroyed
+
+  release_channel = "STABLE"  # Канал обновлений
+
+  # Зависимость от ожидания применения IAM-ролей
   depends_on = [time_sleep.wait_sa]
 }
 
+# Группа узлов для Kubernetes-кластера
 resource "yandex_kubernetes_node_group" "k8s-node-group" {
   description = "Node group for the Managed Service for Kubernetes cluster"
   name        = "k8s-node-group"
   cluster_id  = yandex_kubernetes_cluster.sentry.id
-  version     = local.k8s_version
+  version     = local.k8s_version  # Версия Kubernetes на нодах
 
   scale_policy {
     fixed_scale {
-      size = local.number_of_k8s_hosts
+      size = local.number_of_k8s_hosts  # Фиксированное количество нод
     }
   }
 
   allocation_policy {
-    location {
-      zone = yandex_vpc_subnet.sentry-a.zone
-    }
-
-    location {
-      zone = yandex_vpc_subnet.sentry-b.zone
-    }
-
-    location {
-      zone = yandex_vpc_subnet.sentry-d.zone
-    }
+    # Распределение нод по зонам отказоустойчивости
+    location { zone = yandex_vpc_subnet.sentry-a.zone }
+    location { zone = yandex_vpc_subnet.sentry-b.zone }
+    location { zone = yandex_vpc_subnet.sentry-d.zone }
   }
 
-
   instance_template {
-    platform_id = "standard-v2"
+    platform_id = "standard-v2"  # Тип виртуальной машины
 
     network_interface {
-      nat = true
+      nat = true  # Включение NAT для доступа в интернет
       subnet_ids = [
         yandex_vpc_subnet.sentry-a.id,
         yandex_vpc_subnet.sentry-b.id,
@@ -80,29 +80,32 @@ resource "yandex_kubernetes_node_group" "k8s-node-group" {
     }
 
     resources {
-      memory = local.memory_of_k8s_hosts
-      cores  = local.cores_of_k8s_hosts
+      memory = local.memory_of_k8s_hosts  # ОЗУ
+      cores  = local.cores_of_k8s_hosts   # Кол-во ядер CPU
     }
 
     boot_disk {
-      type = "network-ssd"
-      size = local.boot_disk
+      type = "network-ssd"         # Тип диска
+      size = local.boot_disk       # Размер диска
     }
   }
 }
 
+# Настройка провайдера Helm для установки чарта в Kubernetes
 provider "helm" {
   kubernetes {
-    host                   = yandex_kubernetes_cluster.sentry.master[0].external_v4_endpoint
-    cluster_ca_certificate = yandex_kubernetes_cluster.sentry.master[0].cluster_ca_certificate
+    host                   = yandex_kubernetes_cluster.sentry.master[0].external_v4_endpoint  # Адрес API Kubernetes
+    cluster_ca_certificate = yandex_kubernetes_cluster.sentry.master[0].cluster_ca_certificate  # CA-сертификат
+
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-      args        = ["k8s", "create-token"]
+      args        = ["k8s", "create-token"]  # Команда получения токена через CLI Yandex.Cloud
       command     = "yc"
     }
   }
 }
 
+# Установка ingress-nginx через Helm
 resource "helm_release" "ingress_nginx" {
   name             = "ingress-nginx"
   repository       = "https://kubernetes.github.io/ingress-nginx"
@@ -111,13 +114,14 @@ resource "helm_release" "ingress_nginx" {
   namespace        = "ingress-nginx"
   create_namespace = true
   depends_on       = [yandex_kubernetes_cluster.sentry]
+
   set {
     name  = "controller.service.loadBalancerIP"
-    value = yandex_vpc_address.addr.external_ipv4_address[0].address
+    value = yandex_vpc_address.addr.external_ipv4_address[0].address  # Присвоение внешнего IP ingress-контроллеру
   }
-
 }
 
+# Вывод команды для получения kubeconfig
 output "k8s_cluster_credentials_command" {
   value = "yc managed-kubernetes cluster get-credentials --id ${yandex_kubernetes_cluster.sentry.id} --external --force"
 }
