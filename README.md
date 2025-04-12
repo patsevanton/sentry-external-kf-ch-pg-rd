@@ -122,7 +122,4 @@ sentryConfPy: |
 В файле enhance-image.sh происходит добавление сертификатов и установка sentry-s3-nodestore.
 Сертификаты устанавливаются в python модуль certifi
 
-## Планы на будущие посты о Sentry
-- Использовать Elasticsearch для nodestore
-
 При публикации опубликовать исходный terraform код
