@@ -1,26 +1,37 @@
+# Пользовательская конфигурация для Sentry
 user:
-  password: "${sentry_admin_password}"
-  email: "${user_email}"
+  password: "${sentry_admin_password}"  # Пароль администратора Sentry
+  email: "${user_email}"                # Email администратора
+
+# Системная информация
 system:
-  url: "${system_url}"
+  url: "${system_url}"  # URL-адрес системы
+
+# Контейнерные образы компонентов Sentry
 images:
   sentry:
-    repository: ghcr.io/patsevanton/ghcr-sentry-custom-images
+    repository: ghcr.io/patsevanton/ghcr-sentry-custom-images  # Кастомный образ Sentry
   snuba:
-    repository: ghcr.io/patsevanton/ghcr-snuba-custom-images
+    repository: ghcr.io/patsevanton/ghcr-snuba-custom-images   # Кастомный образ Snuba
   relay:
-    repository: ghcr.io/patsevanton/ghcr-relay-custom-images
+    repository: ghcr.io/patsevanton/ghcr-relay-custom-images   # Кастомный образ Relay
+
+# Настройка NGINX
 nginx:
-  enabled: ${nginx_enabled}
+  enabled: ${nginx_enabled}  # Включен ли встроенный NGINX
+
+# Настройка ingress-контроллера
 ingress:
-  enabled: ${ingress_enabled}
-  hostname: "${ingress_hostname}"
-  ingressClassName: "${ingress_class_name}"
-  regexPathStyle: "${ingress_regex_path_style}"
+  enabled: ${ingress_enabled}                     # Включение ingress
+  hostname: "${ingress_hostname}"                 # Хостнейм для доступа
+  ingressClassName: "${ingress_class_name}"       # Класс ingress-контроллера
+  regexPathStyle: "${ingress_regex_path_style}"   # Использование регулярных выражений в путях
   annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "${ingress_annotations.proxy_body_size}"
-    nginx.ingress.kubernetes.io/proxy-buffers-number: "${ingress_annotations.proxy_buffers_number}"
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "${ingress_annotations.proxy_buffer_size}"
+    nginx.ingress.kubernetes.io/proxy-body-size: "${ingress_annotations.proxy_body_size}"  # Максимальный размер тела запроса
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "${ingress_annotations.proxy_buffers_number}"  # Количество буферов
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "${ingress_annotations.proxy_buffer_size}"        # Размер буфера
+
+# Настройки файлового хранилища
 filestore:
   backend: "s3"
   s3:
