@@ -129,6 +129,13 @@ sentryConfPy: |
 Параметр [asHook](https://github.com/sentry-kubernetes/charts/blob/develop/charts/sentry/values.yaml#L31C1-L31C13) в Sentry Helm chart указывает, что основные контейнерами и миграции должны запуститься перед основными контейнерами.
 Это нужно для первого запуска Sentry. После его можно отключить.
 
+## Схема взаимодействия компонентов sentry для понимания как все сложно
+![](https://habrastorage.org/webt/yb/-v/ff/yb-vfflyysktkwlddzkwu1knwbg.png)
+
+![](https://habrastorage.org/webt/s_/vj/0w/s_vj0wic87xcmr12wlpokreui8q.png)
+
+![](https://habrastorage.org/webt/zv/vd/2u/zvvd2uv6f_rmtjgjxmp74ekdylo.png)
+
 ## Планы на следующие посты про Sentry
 - Использовать Elasticsearch для NodeStore
 - Расписать про масштабируемость
