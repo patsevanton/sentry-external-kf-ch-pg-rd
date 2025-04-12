@@ -124,3 +124,5 @@ sentryConfPy: |
 
 ## Планы на будущие посты о Sentry
 - Использовать Elasticsearch для nodestore
+
+При публикации опубликовать исходный terraform код
