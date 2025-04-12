@@ -26,6 +26,18 @@
 - Подключение Kafka, Redis, ClickHouse, Postgres через SSL.
 - Динамическое формирование values для helm чарта sentry
 
+## Почему важно выносить Kafka, Redis, ClickHouse, Postgres вне Kubernetes
+Плюсы такого подхода:
+
+* Масштабируемость
+* Изоляция ресурсов
+* Более надежное хранилище
+
+Минусы/предостережения:
+
+* Логирование и трассировка проблем становится чуть сложнее
+* Требует аккуратной настройки переменных и IAM-доступов (особенно к S3)
+
 ## Подключение Kafka, Redis, ClickHouse, Postgres через SSL
 В этом посте в отличие от предыдущего будет подключение Kafka, Redis, Postgres через SSL.
 Для подключения ClickHouse по SSL ждем вот этого [PR](https://github.com/sentry-kubernetes/charts/pull/1671).
