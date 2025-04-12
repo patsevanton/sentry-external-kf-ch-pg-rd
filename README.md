@@ -1,10 +1,13 @@
 # **"Sentry с внешними Kafka, ClickHouse, Postgres, Redis (и немного Terraform магии)"**
 
-## Введение
+## В этом посте
 
 - Кратко о Sentry: что это, зачем он нужен
-- Почему важно выносить backend-ресурсы (Kafka, Redis, ClickHouse, Postgres) отдельно от самого Sentry
-- Для кого статья: DevOps, Backend-разработчики, инженеры, автоматизирующие инфраструктуру
+- Почему важно выносить Kafka, Redis, ClickHouse, Postgres вне Kubernetes
+- Подключение Kafka, Redis, ClickHouse, Postgres через SSL
+- Хранение debug файлов и основных данных (Nodestore) в S3
+- Динамическое формирование файла values.yaml
+- Планы на будущие посты о Sentry
 
 ---
 
