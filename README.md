@@ -1,15 +1,5 @@
 # **"Sentry с внешними Kafka, ClickHouse, Postgres, Redis (и немного Terraform магии)"**
 
-## В этом посте
-
-- Кратко о Sentry: что это, зачем он нужен
-- Почему важно выносить Kafka, Redis, ClickHouse, Postgres вне Kubernetes
-- Подключение Kafka, Redis, ClickHouse, Postgres через SSL
-- Структура Terraform проекта
-- Хранение debug файлов и основных данных (Nodestore) в S3
-- Динамическое формирование файла values.yaml
-- Планы на будущие посты о Sentry
-
 ## Кратко о Sentry: что это, зачем он нужен
 
 **[Sentry](https://github.com/getsentry/sentry)** — это инструмент для отслеживания ошибок и производительности приложений в реальном времени.
@@ -111,6 +101,7 @@ sentryConfPy: |
   }
 ```
 
+## Динамическое формирование файла values.yaml
 ## Формирование values.yaml для Sentry
 
 - Файл values.yaml (`values_sentry.yaml`) формируется используя шаблон `values_sentry.yaml.tpl` и `templatefile.tf`
@@ -129,3 +120,6 @@ sentryConfPy: |
 
 ## Получение паролей
 Пароли можно получить посмотрев values_sentry.yaml или используя terraform output
+
+## Планы на будущие посты о Sentry
+- Использовать Elasticsearch для nodestore
