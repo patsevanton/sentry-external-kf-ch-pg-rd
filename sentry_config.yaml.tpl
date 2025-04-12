@@ -51,44 +51,62 @@ config:
         "aws_access_key_id": "${nodestore.s3.accessKey}",
         "aws_secret_access_key": "${nodestore.s3.secretKey}",
     }
+
+# Встроенная PostgreSQL база данных
 postgresql:
-  enabled: ${postgresql_enabled}
+  enabled: ${postgresql_enabled}  # Использовать ли встроенный PostgreSQL
+
+# Конфигурация внешней PostgreSQL базы данных
 externalPostgresql:
-  password: "${external_postgresql.password}"
-  host: "${external_postgresql.host}"
-  port: ${external_postgresql.port}
-  username: "${external_postgresql.username}"
-  database: "${external_postgresql.database}"
-  sslMode: require
+  password: "${external_postgresql.password}"  # Пароль БД
+  host: "${external_postgresql.host}"          # Хост БД
+  port: ${external_postgresql.port}            # Порт
+  username: "${external_postgresql.username}"  # Имя пользователя
+  database: "${external_postgresql.database}"  # Название БД
+  sslMode: require                              # Режим SSL
+
+# Встроенный Redis
 redis:
-  enabled: ${redis_enabled}
+  enabled: ${redis_enabled}  # Включить ли встроенный Redis
+
+# Подключение к внешнему Redis
 externalRedis:
-  password: "${external_redis.password}"
-  host: "${external_redis.host}"
-  port: ${external_redis.port}
-  ssl: true
+  password: "${external_redis.password}"  # Пароль Redis
+  host: "${external_redis.host}"          # Хост Redis
+  port: ${external_redis.port}            # Порт Redis
+  ssl: true                               # Использовать SSL
+
+# Внешний кластер Kafka
 externalKafka:
   cluster:
 %{ for kafka_host in external_kafka.cluster ~}
-    - host: "${kafka_host.host}"
-      port: ${kafka_host.port}
+    - host: "${kafka_host.host}"         # Хост Kafka брокера
+      port: ${kafka_host.port}           # Порт Kafka брокера
 %{ endfor }
   sasl:
-    mechanism: "${external_kafka.sasl.mechanism}"
-    username: "${external_kafka.sasl.username}"
-    password: "${external_kafka.sasl.password}"
+    mechanism: "${external_kafka.sasl.mechanism}"  # Механизм аутентификации (например, PLAIN, SCRAM)
+    username: "${external_kafka.sasl.username}"    # Имя пользователя Kafka
+    password: "${external_kafka.sasl.password}"    # Пароль Kafka
   security:
-    protocol: "${external_kafka.security.protocol}"
+    protocol: "${external_kafka.security.protocol}"  # Протокол безопасности (например, SASL_SSL)
+
+# Встроенный кластер Kafka
 kafka:
-  enabled: ${kafka_enabled}
+  enabled: ${kafka_enabled}  # Включить встроенный Kafka
+
+# Встроенный ZooKeeper
 zookeeper:
-  enabled: ${zookeeper_enabled}
+  enabled: ${zookeeper_enabled}  # Включить встроенный ZooKeeper
+
+# Встроенный Clickhouse
 clickhouse:
-  enabled: ${clickhouse_enabled}
+  enabled: ${clickhouse_enabled}  # Включить встроенный Clickhouse
+
+# Подключение к внешнему Clickhouse
 externalClickhouse:
-  password: "${external_clickhouse.password}"
-  host: "${external_clickhouse.host}"
-  database: "${external_clickhouse.database}"
-  httpPort: ${external_clickhouse.httpPort}
-  tcpPort: ${external_clickhouse.tcpPort}
-  username: "${external_clickhouse.username}"
+  password: "${external_clickhouse.password}"      # Пароль
+  host: "${external_clickhouse.host}"              # Хост
+  database: "${external_clickhouse.database}"      # Название БД
+  httpPort: ${external_clickhouse.httpPort}        # HTTP-порт
+  tcpPort: ${external_clickhouse.tcpPort}          # TCP-порт
+  username: "${external_clickhouse.username}"      # Имя пользователя
