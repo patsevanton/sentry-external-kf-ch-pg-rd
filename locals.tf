@@ -1,65 +1,73 @@
+# Получаем информацию о конфигурации клиента Yandex
 data "yandex_client_config" "client" {}
 
+# Генерация случайного пароля для Kafka
 resource "random_password" "kafka" {
-  length      = 20
-  special     = false
-  min_numeric = 4  # Минимум 4 цифры
-  min_upper   = 4  # Минимум 4 заглавные буквы
+  length      = 20            # Длина пароля 20 символов
+  special     = false          # Без специальных символов
+  min_numeric = 4             # Минимум 4 цифры в пароле
+  min_upper   = 4             # Минимум 4 заглавные буквы в пароле
 }
 
+# Генерация случайного пароля для ClickHouse
 resource "random_password" "clickhouse" {
-  length      = 20
-  special     = false
-  min_numeric = 4
-  min_upper   = 4
+  length      = 20            # Длина пароля 20 символов
+  special     = false          # Без специальных символов
+  min_numeric = 4             # Минимум 4 цифры в пароле
+  min_upper   = 4             # Минимум 4 заглавные буквы в пароле
 }
 
+# Генерация случайного пароля для Redis
 resource "random_password" "redis" {
-  length      = 20
-  special     = false
-  min_numeric = 4
-  min_upper   = 4
+  length      = 20            # Длина пароля 20 символов
+  special     = false          # Без специальных символов
+  min_numeric = 4             # Минимум 4 цифры в пароле
+  min_upper   = 4             # Минимум 4 заглавные буквы в пароле
 }
 
+# Генерация случайного пароля для PostgreSQL
 resource "random_password" "postgres" {
-  length      = 20
-  special     = false
-  min_numeric = 4
-  min_upper   = 4
+  length      = 20            # Длина пароля 20 символов
+  special     = false          # Без специальных символов
+  min_numeric = 4             # Минимум 4 цифры в пароле
+  min_upper   = 4             # Минимум 4 заглавные буквы в пароле
 }
 
+# Генерация случайного пароля для администратора Sentry
 resource "random_password" "sentry_admin_password" {
-  length      = 20
-  special     = false
-  min_numeric = 4
-  min_upper   = 4
+  length      = 20            # Длина пароля 20 символов
+  special     = false          # Без специальных символов
+  min_numeric = 4             # Минимум 4 цифры в пароле
+  min_upper   = 4             # Минимум 4 заглавные буквы в пароле
 }
 
+# Локальные переменные для настройки инфраструктуры
 locals {
-  folder_id           = data.yandex_client_config.client.folder_id
-  k8s_version         = "1.30"
-  number_of_k8s_hosts = 3
-  boot_disk           = 128 # GB
-  memory_of_k8s_hosts = 20
-  cores_of_k8s_hosts  = 4
-  sentry_admin_password = random_password.sentry_admin_password.result
-  kafka_user          = "sentry"
-  kafka_password      = random_password.kafka.result
-  clickhouse_user     = "sentry"
-  clickhouse_password = random_password.clickhouse.result
-  redis_password      = random_password.redis.result
-  postgres_password   = random_password.postgres.result
-  filestore_bucket    = "sentry-bucket-apatsev-filestore-test"
-  nodestore_bucket    = "sentry-bucket-apatsev-nodestore-test"
+  folder_id           = data.yandex_client_config.client.folder_id  # ID папки в Yandex Cloud
+  k8s_version         = "1.30"                                      # Версия Kubernetes
+  number_of_k8s_hosts = 3                                           # Количество хостов для Kubernetes
+  boot_disk           = 128                                         # Размер boot-диска (в ГБ)
+  memory_of_k8s_hosts = 20                                          # Оперативная память для каждого хоста (в ГБ)
+  cores_of_k8s_hosts  = 4                                           # Количество ядер процессора для каждого хоста
+  sentry_admin_password = random_password.sentry_admin_password.result # Сгенерированный пароль администратора Sentry
+  kafka_user          = "sentry"                                    # Имя пользователя для Kafka
+  kafka_password      = random_password.kafka.result                # Сгенерированный пароль для Kafka
+  clickhouse_user     = "sentry"                                    # Имя пользователя для ClickHouse
+  clickhouse_password = random_password.clickhouse.result          # Сгенерированный пароль для ClickHouse
+  redis_password      = random_password.redis.result                # Сгенерированный пароль для Redis
+  postgres_password   = random_password.postgres.result             # Сгенерированный пароль для PostgreSQL
+  filestore_bucket    = "sentry-bucket-apatsev-filestore-test"      # Имя бакета для Filestore
+  nodestore_bucket    = "sentry-bucket-apatsev-nodestore-test"      # Имя бакета для Nodestore
 }
 
+# Выводим сгенерированные пароли для сервисов
 output "generated_passwords" {
-  description = "Map of generated passwords for services"
+  description = "Map of generated passwords for services"  # Описание вывода
   value = {
-    kafka_password      = random_password.kafka.result
-    clickhouse_password = random_password.clickhouse.result
-    redis_password      = random_password.redis.result
-    postgres_password   = random_password.postgres.result
+    kafka_password      = random_password.kafka.result      # Пароль для Kafka
+    clickhouse_password = random_password.clickhouse.result # Пароль для ClickHouse
+    redis_password      = random_password.redis.result      # Пароль для Redis
+    postgres_password   = random_password.postgres.result   # Пароль для PostgreSQL
   }
-  sensitive = true  # Скрывает пароли в логах, но доступны через `terraform output`
+  sensitive = true  # Скрывает пароли в логах, но они доступны через `terraform output`
 }
