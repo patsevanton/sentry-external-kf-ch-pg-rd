@@ -11,30 +11,18 @@
 
 ---
 
-## Архитектура решения
-
-- Описание общей схемы:
-    - Sentry в Kubernetes (или на VM)
-    - Внешние managed сервисы: Kafka, Redis, ClickHouse, Postgres
-    - Хранение blob-данных в S3 (nodestore/filestore)
-- Упоминание, что всё описано в Terraform
-
----
-
 ## Структура Terraform проекта
 
 - Список и краткое описание ключевых файлов:
-    - `clickhouse.tf` — настройка ClickHouse
+    - `clickhouse.tf` — managed ClickHouse (Yandex Cloud)
     - `kafka.tf` — managed Kafka (Yandex Cloud)
-    - `postgres.tf` — база под основной Sentry
-    - `redis.tf` — для кэширования и очередей
-    - `s3_filestore.tf` и `s3_nodestore.tf` — хранилище blob-данных
+    - `postgres.tf` — managed Postgres (Yandex Cloud)
+    - `redis.tf` — для кэширования и очередей managed Redis (Yandex Cloud)
+    - `s3_filestore.tf` и `s3_nodestore.tf` — хранилище blob-данных managed S3 (Yandex Cloud)
     - `sentry_config.yaml` и `sentry_config.yaml.tpl` — конфиг для Sentry, параметризуем через Terraform `templatefile`
-    - `k8s.tf` — деплой Sentry в кластер
+    - `k8s.tf` — managed Kuberbetes (Yandex Cloud) для деплоя Sentry
     - `example-python/` — демонстрация, как отправлять ошибки в Sentry из Python
-
-🛠️ Также можно упомянуть:
-- `locals.tf`, `net.tf`, `ip-dns.tf`, `versions.tf` — для инфраструктурной логики и сетевой настройки
+    - `locals.tf`, `net.tf`, `ip-dns.tf`, `versions.tf` — для инфраструктурной логики и сетевой настройки
 
 ---
 
@@ -60,12 +48,13 @@
 Запускаем инфраструктуру:
 
 ```shell
+export YC_FOLDER_ID='ваша подсеть'
 terraform init
 terraform apply
 ```
 Проверяем выходные данные (terraform output)
 Генерим конфиг sentry_config.yaml из шаблона
-Деплоим Sentry в кластер (через Helm или kubectl apply)
+Деплоим Sentry в кластер через Helm
 
 
 ## Подводим итоги
