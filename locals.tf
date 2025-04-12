@@ -44,11 +44,7 @@ resource "random_password" "sentry_admin_password" {
 # Локальные переменные для настройки инфраструктуры
 locals {
   folder_id           = data.yandex_client_config.client.folder_id  # ID папки в Yandex Cloud
-  k8s_version         = "1.30"                                      # Версия Kubernetes
-  number_of_k8s_hosts = 3                                           # Количество хостов для Kubernetes
   boot_disk           = 128                                         # Размер boot-диска (в ГБ)
-  memory_of_k8s_hosts = 20                                          # Оперативная память для каждого хоста (в ГБ)
-  cores_of_k8s_hosts  = 4                                           # Количество ядер процессора для каждого хоста
   sentry_admin_password = random_password.sentry_admin_password.result # Сгенерированный пароль администратора Sentry
   kafka_user          = "sentry"                                    # Имя пользователя для Kafka
   kafka_password      = random_password.kafka.result                # Сгенерированный пароль для Kafka
