@@ -18,6 +18,17 @@
 - Помогает разработчикам быстро находить и исправлять баги.
 - Поддерживает множество языков и фреймворков
 
+## Почему важно выносить Kafka, Redis, ClickHouse, Postgres вне Kubernetes
+Плюсы такого подхода:
+
+* Масштабируемость
+* Изоляция ресурсов
+* Более надежное хранилище
+
+Минусы/предостережения:
+
+* Логирование и трассировка проблем становится чуть сложнее
+* Требует аккуратной настройки переменных и IAM-доступов (особенно к S3)
 
 ## Структура Terraform проекта
 
@@ -61,19 +72,21 @@ export YC_FOLDER_ID='ваша подсеть'
 terraform init
 terraform apply
 ```
-Проверяем выходные данные (terraform output)
-Генерим конфиг sentry_config.yaml из шаблона
+
+Формируем kubeconfig для кластера k8s с указанным ID (xx) в Yandex Cloud, используя внешний IP (--external)
+```shell
+yc managed-kubernetes cluster get-credentials --id xxx --external --force
+```
+
+Проверяем сгенерированный конфиг sentry_config.yaml из шаблона
+
 Деплоим Sentry в кластер через Helm
+```shell
+kubectl create namespace test
+helm repo add sentry https://sentry-kubernetes.github.io/charts
+helm repo update
+helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f sentry_config.yaml
+```
 
 
-## Подводим итоги
-Плюсы такого подхода:
 
-* Масштабируемость
-* Изоляция ресурсов
-* Более надежное хранилище
-
-Минусы/предостережения:
-
-* Логирование и трассировка проблем становится чуть сложнее
-* Требует аккуратной настройки переменных и IAM-доступов (особенно к S3)
