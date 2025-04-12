@@ -1,4 +1,4 @@
-# **"Sentry с внешними Kafka, ClickHouse, Postgres, Redis (и немного Terraform магии)"**
+# **"Sentry с внешними Kafka, ClickHouse, Postgres, Redis и Nodestore в S3"**
 
 ## Кратко о Sentry: что это, зачем он нужен
 
@@ -17,6 +17,9 @@
 - Динамическое формирование values для helm чарта sentry
 
 ## Быстрый старт
+
+Меняем dns зону и dns запись в файле ip-dns.tf
+
 Запускаем инфраструктуру:
 
 ```shell

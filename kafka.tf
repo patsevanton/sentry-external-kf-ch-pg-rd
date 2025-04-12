@@ -13,7 +13,7 @@ resource "yandex_mdb_kafka_cluster" "sentry" {
   ]
 
   config {
-    version       = "3.5"                            # Версия Kafka
+    version       = "3.5"                            # TODO поменять на 3.6
     brokers_count = 1                                # Кол-во брокеров в каждой зоне
     zones = [                                        # Зоны размещения брокеров
       yandex_vpc_subnet.sentry-a.zone,
@@ -25,7 +25,7 @@ resource "yandex_mdb_kafka_cluster" "sentry" {
 
     kafka {
       resources {
-        resource_preset_id = "s2.micro"              # Тип инстанса
+        resource_preset_id = "s2.micro"              # TODO заменить на s3-c2-m8
         disk_type_id       = "network-ssd"           # Тип диска
         disk_size          = 200                     # Размер диска в ГБ
       }

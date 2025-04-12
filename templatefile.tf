@@ -22,7 +22,7 @@ locals {
     user_email     = "admin@sentry.apatsev.org.ru"
 
     # URL системы Sentry
-    system_url     = "http://sentry.apatsev.org.ru"
+    system_url     = "http://sentry.apatsev.org.ru" # TODO использовать переменную
 
     # Включение/отключение Nginx
     nginx_enabled  = false
@@ -31,7 +31,7 @@ locals {
     ingress_enabled = true
 
     # Имя хоста, используемого Ingress
-    ingress_hostname = "sentry.apatsev.org.ru"
+    ingress_hostname = "sentry.apatsev.org.ru" # использовать переменную и конкатенацию
 
     # Имя класса Ingress-контроллера
     ingress_class_name = "nginx"

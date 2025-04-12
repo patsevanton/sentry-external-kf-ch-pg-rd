@@ -12,7 +12,7 @@ resource "yandex_mdb_postgresql_cluster" "postgresql_cluster" {
   # Конфигурация кластера PostgreSQL
   config {
     # Версия PostgreSQL
-    version = "15"
+    version = "15" # TODO поменять на 16
 
     # Включение автофейловера (автоматический перевод на другой узел при сбое)
     autofailover = true
