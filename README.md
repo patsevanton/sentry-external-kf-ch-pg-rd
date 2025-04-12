@@ -10,9 +10,9 @@
 - Динамическое формирование файла values.yaml
 - Планы на будущие посты о Sentry
 
-### Кратко о Sentry: что это, зачем он нужен
+## Кратко о Sentry: что это, зачем он нужен
 
-**Sentry** — это инструмент для отслеживания ошибок и производительности приложений в реальном времени.
+**[Sentry](https://github.com/getsentry/sentry)** — это инструмент для отслеживания ошибок и производительности приложений в реальном времени.
 
 - Отслеживает баги и exceptions в бекенд, веб и мобильных приложениях.
 - Показывает стек вызовов, контекст, окружение, пользователя и другую полезную информацию.
@@ -34,6 +34,7 @@
 ## Подключение Kafka, Redis, ClickHouse, Postgres через SSL
 В этом посте в отличие от предыдущего будет подключение Kafka, Redis, Postgres через SSL.
 Для подключения ClickHouse по SSL ждем вот этого [PR](https://github.com/sentry-kubernetes/charts/pull/1671).
+В terraform коде в комментариях указано как настраивать SSL.
 
 ## Структура Terraform проекта
 
@@ -45,7 +46,7 @@
     - `s3_filestore.tf` и `s3_nodestore.tf` — хранилище blob-данных managed S3 (Yandex Cloud)
     - `values_sentry.yaml` и `values_sentry.yaml.tpl` — конфиг для Sentry, параметризуем через Terraform `templatefile`
     - `k8s.tf` — managed Kuberbetes (Yandex Cloud) для деплоя Sentry
-    - `example-python/` — демонстрация, как отправлять ошибки в Sentry из Python
+    - `example-python` — демонстрация, как отправлять ошибки в Sentry из Python
     - `locals.tf` – определяет локальные переменные, используемые в других файлах Terraform.
     - `net.tf` – описывает сетевые ресурсы, такие как VPC, подсети и маршруты.
     - `ip-dns.tf` – настраивает IP-адреса и записи DNS для ресурсов.
@@ -70,11 +71,6 @@ sentryConfPy: |
 ## Формирование values.yaml для Sentry
 
 - Файл values.yaml (`values_sentry.yaml`) формируется используя шаблон `values_sentry.yaml.tpl` и `templatefile.tf`
-- Примеры параметров:
-    - `SENTRY_REDIS_HOST`
-    - `SENTRY_DB_NAME`
-    - `KAFKA_BROKER_URL`
-    - `SENTRY_EVENT_RETENTION_DAYS`
 - Как шаблон превращается в финальный конфиг (через `templatefile()` в Terraform)
 
 ## Как всё это собрать и запустить
