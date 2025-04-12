@@ -48,6 +48,7 @@ helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f values_
 ## Простой пример отправки exception
 
 - Заходим в директорию `example-python`
+- Меняем dsn в main.py
 - Запускаем python код
 ```shell
 cd example-python
