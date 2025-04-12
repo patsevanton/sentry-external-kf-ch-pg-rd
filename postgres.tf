@@ -84,7 +84,7 @@ resource "yandex_mdb_postgresql_user" "postgresql_user" {
   password   = local.postgres_password
 
   # Ограничение по количеству соединений
-  conn_limit = 50
+  conn_limit = 50 # TODO увеличить conn_limit
 
   # Разрешения для пользователя (пока пустой список)
   grants     = []
