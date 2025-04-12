@@ -2,19 +2,19 @@
 # генерирующей файл конфигурации Sentry на основе шаблона
 resource "null_resource" "write_sentry_config" {
   provisioner "local-exec" {
-    # Команда записывает сгенерированную строку (YAML) в файл sentry_config.yaml
-    command = "echo '${local.sentry_config}' > sentry_config.yaml"
+    # Команда записывает сгенерированную строку (YAML) в файл values_sentry.yaml
+    command = "echo '${local.sentry_config}' > values_sentry.yaml"
   }
 
   triggers = {
-    # Триггер перезапуска ресурса при изменении содержимого sentry_config.yaml.tpl
+    # Триггер перезапуска ресурса при изменении содержимого values_sentry.yaml.tpl
     sentry_config = local.sentry_config
   }
 }
 
 locals {
-  # Локальная переменная с конфигурацией Sentry, генерируемая из шаблона sentry_config.yaml.tpl
-  sentry_config = templatefile("sentry_config.yaml.tpl", {
+  # Локальная переменная с конфигурацией Sentry, генерируемая из шаблона values_sentry.yaml.tpl
+  sentry_config = templatefile("values_sentry.yaml.tpl", {
     # Пароль администратора Sentry
     sentry_admin_password  = local.sentry_admin_password
 

@@ -6,10 +6,9 @@ terraform init
 terraform apply
 
 kubectl create namespace test
-
 helm repo add sentry https://sentry-kubernetes.github.io/charts
 helm repo update
-helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f sentry_config.yaml
+helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f values_sentry.yaml
 ```
 
 

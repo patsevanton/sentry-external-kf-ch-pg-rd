@@ -36,6 +36,6 @@ override.tf.json
 .terraformrc
 terraform.rc
 .terraform.lock.hcl
-sentry_config.yaml
+values_sentry.yaml
 .idea
 example-python/venv/*

@@ -43,7 +43,7 @@
     - `postgres.tf` — managed Postgres (Yandex Cloud)
     - `redis.tf` — для кэширования и очередей managed Redis (Yandex Cloud)
     - `s3_filestore.tf` и `s3_nodestore.tf` — хранилище blob-данных managed S3 (Yandex Cloud)
-    - `sentry_config.yaml` и `sentry_config.yaml.tpl` — конфиг для Sentry, параметризуем через Terraform `templatefile`
+    - `values_sentry.yaml` и `values_sentry.yaml.tpl` — конфиг для Sentry, параметризуем через Terraform `templatefile`
     - `k8s.tf` — managed Kuberbetes (Yandex Cloud) для деплоя Sentry
     - `example-python/` — демонстрация, как отправлять ошибки в Sentry из Python
     - `locals.tf` – определяет локальные переменные, используемые в других файлах Terraform.
@@ -54,7 +54,7 @@
 ## Хранение основных данных (Nodestore) в S3
 Отмечу отдельно что основные данные (Nodestore) хранятся в S3
 Файл `s3_nodestore.tf` — хранилище blob-данных managed S3 (Yandex Cloud)
-В файле sentry_config.yaml указание где хранить Nodestore указывается так
+В файле values_sentry.yaml указание где хранить Nodestore указывается так
 ```
 sentryConfPy: |
   SENTRY_NODESTORE = "sentry_s3_nodestore.backend.S3NodeStorage"
@@ -69,7 +69,7 @@ sentryConfPy: |
 
 ## Формирование values.yaml для Sentry
 
-- Файл values.yaml (`sentry_config.yaml`) формируется используя шаблон `sentry_config.yaml.tpl` и `templatefile.tf`
+- Файл values.yaml (`values_sentry.yaml`) формируется используя шаблон `values_sentry.yaml.tpl` и `templatefile.tf`
 - Примеры параметров:
     - `SENTRY_REDIS_HOST`
     - `SENTRY_DB_NAME`
@@ -98,13 +98,12 @@ terraform apply
 yc managed-kubernetes cluster get-credentials --id xxx --external --force
 ```
 
-Проверяем сгенерированный конфиг sentry_config.yaml из шаблона
+Проверяем сгенерированный конфиг values_sentry.yaml из шаблона
 
 Деплоим Sentry в кластер через Helm
 ```shell
 kubectl create namespace test
 helm repo add sentry https://sentry-kubernetes.github.io/charts
 helm repo update
-helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f sentry_config.yaml
+helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f values_sentry.yaml
 ```
-
