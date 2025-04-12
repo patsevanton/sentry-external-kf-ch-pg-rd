@@ -159,9 +159,9 @@ resource "yandex_mdb_kafka_topic" "topics" {
   }
 
   timeouts {
-    create = "30m"
-    update = "30m"
-    delete = "30m"
+    create = "60m"
+    update = "60m"
+    delete = "60m"
   }
 }
 

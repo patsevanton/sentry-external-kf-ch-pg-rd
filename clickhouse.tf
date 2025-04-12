@@ -59,6 +59,13 @@ resource "yandex_mdb_clickhouse_cluster" "sentry" {
     zone      = yandex_vpc_subnet.sentry-d.zone
     subnet_id = yandex_vpc_subnet.sentry-d.id
   }
+
+  timeouts {
+    create = "60m"
+    update = "60m"
+    delete = "60m"
+  }
+  
 }
 
 # Вывод конфиденциальной информации о ClickHouse-кластере

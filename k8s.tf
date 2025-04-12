@@ -52,11 +52,11 @@ resource "yandex_kubernetes_node_group" "k8s-node-group" {
   description = "Node group for the Managed Service for Kubernetes cluster"
   name        = "k8s-node-group"
   cluster_id  = yandex_kubernetes_cluster.sentry.id
-  version     = local.k8s_version  # Версия Kubernetes на нодах
+  version     = "1.30"  # Версия Kubernetes на нодах
 
   scale_policy {
     fixed_scale {
-      size = local.number_of_k8s_hosts  # Фиксированное количество нод
+      size = 3  # Фиксированное количество нод
     }
   }
 
