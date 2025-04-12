@@ -140,5 +140,6 @@ sentryConfPy: |
 ## Планы на следующие посты про Sentry
 - Использовать Elasticsearch для NodeStore
 - Расписать про масштабируемость
+- feature flags в sentry - https://github.com/getsentry/sentry/blob/master/src/sentry/features/temporary.py
 
 При публикации опубликовать исходный terraform код
