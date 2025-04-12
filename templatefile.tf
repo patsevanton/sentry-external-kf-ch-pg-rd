@@ -49,13 +49,13 @@ locals {
     external_redis = {
       password = local.redis_password
       host     = yandex_mdb_redis_cluster.sentry.host[0].fqdn
-      port     = 6380
+      port     = 6380 # 6380 если используется SSL, если нет то 6379
     }
     external_kafka = {
       cluster = [
         for host in yandex_mdb_kafka_cluster.sentry.host : {
           host = host.name
-          port = 9091
+          port = 9091 # 9091 если используется SSL, если нет то 9092
         } if host.role == "KAFKA"
       ]
       sasl = {
@@ -64,7 +64,7 @@ locals {
         password  = local.kafka_password
       }
       security = {
-        protocol = "SASL_SSL"
+        protocol = "SASL_SSL" # SASL_SSL если используется SSL, если нет то SASL_PLAINTEXT
       }
     }
     kafka_enabled = false

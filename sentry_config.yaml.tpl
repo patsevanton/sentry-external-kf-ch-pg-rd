@@ -42,16 +42,16 @@ filestore:
     endpointUrl: "https://storage.yandexcloud.net"  # Endpoint для доступа к S3
     location: "debug-files"                         # Папка для хранения debug-файлов
 
-# Дополнительная конфигурация для Sentry
+# Настройки NODESTORE хранилища
 config:
   sentryConfPy: |
-    SENTRY_NODESTORE = "sentry_s3_nodestore.backend.S3NodeStorage"  # Тип NodeStore — S3
+    SENTRY_NODESTORE = "sentry_s3_nodestore.backend.S3NodeStorage"
     SENTRY_NODESTORE_OPTIONS = {
-        "bucket_name": "${nodestore.s3.bucketName}",                # Название бакета
-        "region": "ru-central1",                                    # Регион — Яндекс.Облако
-        "endpoint": "https://storage.yandexcloud.net",              # Endpoint
-        "aws_access_key_id": "${nodestore.s3.accessKey}",           # Access Key
-        "aws_secret_access_key": "${nodestore.s3.secretKey}",       # Secret Key
+        "bucket_name": "${nodestore.s3.bucketName}",
+        "region": "ru-central1",
+        "endpoint": "https://storage.yandexcloud.net",
+        "aws_access_key_id": "${nodestore.s3.accessKey}",
+        "aws_secret_access_key": "${nodestore.s3.secretKey}",
     }
 
 # Встроенная PostgreSQL база данных
@@ -65,7 +65,7 @@ externalPostgresql:
   port: ${external_postgresql.port}            # Порт
   username: "${external_postgresql.username}"  # Имя пользователя
   database: "${external_postgresql.database}"  # Название БД
-  sslMode: require                              # Режим SSL
+  sslMode: require                             # Добавляем если нужен SSL, если SSL не нужен удаляем эту строку
 
 # Встроенный Redis
 redis:
@@ -76,7 +76,7 @@ externalRedis:
   password: "${external_redis.password}"  # Пароль Redis
   host: "${external_redis.host}"          # Хост Redis
   port: ${external_redis.port}            # Порт Redis
-  ssl: true                               # Использовать SSL
+  ssl: true                               # Добавляем если нужен SSL, если SSL не нужен удаляем эту строку
 
 # Внешний кластер Kafka
 externalKafka:
@@ -90,7 +90,7 @@ externalKafka:
     username: "${external_kafka.sasl.username}"    # Имя пользователя Kafka
     password: "${external_kafka.sasl.password}"    # Пароль Kafka
   security:
-    protocol: "${external_kafka.security.protocol}"  # Протокол безопасности (например, SASL_SSL)
+    protocol: "${external_kafka.security.protocol}"  # Протокол безопасности (например, SASL_SSL, SASL_PLAINTEXT)
 
 # Встроенный кластер Kafka
 kafka:
