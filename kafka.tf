@@ -1,4 +1,5 @@
 # Создание Kafka-кластера в Yandex Cloud
+# Здесь определяется Kafka кластер с именем "sentry" в Yandex Cloud с необходимыми параметрами конфигурации.
 resource "yandex_mdb_kafka_cluster" "sentry" {
   folder_id   = local.folder_id                      # ID папки в Yandex Cloud
   name        = "sentry"                             # Имя кластера
@@ -33,9 +34,10 @@ resource "yandex_mdb_kafka_cluster" "sentry" {
 }
 
 # Список топиков Kafka с параметрами
+# Переменная локальная, которая содержит все топики Kafka и их параметры.
 locals {
   kafka_topics = {
-    # Каждый ключ — имя топика. Значение — карта опций конфигурации (может быть пустой)
+    # Каждый ключ — имя топика. Значение — map опций конфигурации (может быть пустой)
     "events" = {},
     "event-replacements" = {},
     "snuba-commit-log" = {
@@ -142,6 +144,7 @@ locals {
 }
 
 # Создание Kafka-топиков на основе описания в locals.kafka_topics
+# Итерируем по списку топиков и создаём их в Kafka с конфигурациями.
 resource "yandex_mdb_kafka_topic" "topics" {
   for_each = local.kafka_topics                      # Итерируемся по каждому топику
 
@@ -163,11 +166,13 @@ resource "yandex_mdb_kafka_topic" "topics" {
 }
 
 # Локальная переменная со списком имен всех топиков (используется для прав доступа)
+# Список всех имен топиков, используемых для назначения прав доступа.
 locals {
   kafka_permissions = keys(local.kafka_topics)
 }
 
 # Создание пользователя Kafka и назначение прав доступа к каждому топику
+# Создаём пользователя Kafka и настраиваем права доступа для консьюмера и продюсера.
 resource "yandex_mdb_kafka_user" "sentry" {
   cluster_id = yandex_mdb_kafka_cluster.sentry.id
   name       = local.kafka_user                     # Имя пользователя
@@ -193,6 +198,7 @@ resource "yandex_mdb_kafka_user" "sentry" {
 }
 
 # Вывод Kafka-подключения в виде структурированных данных (sensitive — чувствительные данные скрываются)
+# Данный вывод предоставляет информацию о подключении к Kafka с учётом безопасности.
 output "externalKafka" {
   description = "Kafka connection details in structured format"
   value = {
