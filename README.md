@@ -117,14 +117,14 @@ sentryConfPy: |
 ## Собираем кастомные image
 Вы можете использовать docker image по умолчанию или собрать image.
 В этих кастомных image происходит установка сертификатов и установка sentry-s3-nodestore модуля.
+Сертификаты устанавливаются в python модуль certifi.
 Код сборок находится либо в этих репозиториях:
 - https://github.com/patsevanton/ghcr-relay-custom-images
 - https://github.com/patsevanton/ghcr-snuba-custom-images
 - https://github.com/patsevanton/ghcr-sentry-custom-images
 - либо в https://github.com/patsevanton/sentry-external-kf-ch-pg-rd
 
-В файле enhance-image.sh происходит добавление сертификатов и установка sentry-s3-nodestore.
-Сертификаты устанавливаются в python модуль certifi
+
 
 ## Sentry Kubernetes Hook: как это работает
 Параметр [asHook](https://github.com/sentry-kubernetes/charts/blob/develop/charts/sentry/values.yaml#L31C1-L31C13) в Sentry Helm chart указывает, что основные контейнерами и миграции должны запуститься перед основными контейнерами.
