@@ -75,20 +75,20 @@ python3 main.py
 Для подключения ClickHouse по SSL ждем вот этого [PR](https://github.com/sentry-kubernetes/charts/pull/1671).
 В terraform коде в комментариях указано как настраивать SSL.
 
-## Структура Terraform проекта
+## Структура Terraform [проекта](https://github.com/patsevanton/sentry-external-kf-ch-pg-rd)
 
-- Список и краткое описание ключевых файлов:
+- Список и краткое описание ключевых файлов в [репо](https://github.com/patsevanton/sentry-external-kf-ch-pg-rd):
+    - `example-python` — демонстрация, как отправлять ошибки в Sentry из Python
     - `clickhouse.tf` — managed ClickHouse (Yandex Cloud)
+    - `ip-dns.tf` – настраивает IP-адреса и записи DNS для ресурсов.
+    - `k8s.tf` — managed Kuberbetes (Yandex Cloud) для деплоя Sentry
     - `kafka.tf` — managed Kafka (Yandex Cloud)
+    - `locals.tf` – определяет локальные переменные, используемые в других файлах Terraform.
+    - `net.tf` – описывает сетевые ресурсы, такие как VPC, подсети и маршруты.
     - `postgres.tf` — managed Postgres (Yandex Cloud)
     - `redis.tf` — для кэширования и очередей managed Redis (Yandex Cloud)
     - `s3_filestore.tf` и `s3_nodestore.tf` — хранилище blob-данных managed S3 (Yandex Cloud)
     - `values_sentry.yaml` и `values_sentry.yaml.tpl` — конфиг для Sentry, параметризуем через Terraform `templatefile`
-    - `k8s.tf` — managed Kuberbetes (Yandex Cloud) для деплоя Sentry
-    - `example-python` — демонстрация, как отправлять ошибки в Sentry из Python
-    - `locals.tf` – определяет локальные переменные, используемые в других файлах Terraform.
-    - `net.tf` – описывает сетевые ресурсы, такие как VPC, подсети и маршруты.
-    - `ip-dns.tf` – настраивает IP-адреса и записи DNS для ресурсов.
     - `versions.tf` – задаёт версии Terraform и провайдеров, необходимых для работы проекта.
 
 ## Хранение основных данных (Nodestore) в S3
