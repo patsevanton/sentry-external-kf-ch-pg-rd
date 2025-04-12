@@ -44,6 +44,7 @@ helm repo add sentry https://sentry-kubernetes.github.io/charts
 helm repo update
 helm upgrade --install sentry -n test sentry/sentry --version 26.15.1 -f values_sentry.yaml
 ```
+В версии `26.15.1` sentry helm чарта используется `25.2.0` версия sentry
 
 ## Пароли
 Пароли генерируются динамически, но вы можете указать свои пароль в local.tf
@@ -123,6 +124,10 @@ sentryConfPy: |
 
 В файле enhance-image.sh происходит добавление сертификатов и установка sentry-s3-nodestore.
 Сертификаты устанавливаются в python модуль certifi
+
+## Sentry Kubernetes Hook: как это работает
+Параметр [asHook](https://github.com/sentry-kubernetes/charts/blob/develop/charts/sentry/values.yaml#L31C1-L31C13) в Sentry Helm chart указывает, что основные контейнерами и миграции должны запуститься перед основными контейнерами.
+Это нужно для первого запуска Sentry. После его можно отключить.
 
 ## Планы на следующие посты про Sentry
 - Использовать Elasticsearch для NodeStore
