@@ -2,7 +2,7 @@
 
 ## Кратко о Sentry: что это, зачем он нужен
 
-![](https://habrastorage.org/webt/3t/q_/_o/3tq__ok84lzqwaghchbq4bpwlek.jpeg)
+![](https://habrastorage.org/webt/m_/nb/ua/m_nbuavazhzrghkbszumggd1mio.jpeg)
 
 **[Sentry](https://github.com/getsentry/sentry)** — это инструмент для отслеживания ошибок и производительности приложений в реальном времени.
 
