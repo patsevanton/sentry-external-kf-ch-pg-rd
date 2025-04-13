@@ -12,6 +12,8 @@ resource "yandex_storage_bucket" "filestore" {
   # Название бакета
   bucket     = local.filestore_bucket
 
+  # Важно: команда sentry cleanup не удаляет файлы, хранящиеся во внешнем хранилище, таком как GCS или S3.
+  # https://develop.sentry.dev/self-hosted/experimental/external-storage/
   # Правило жизненного цикла объектов в бакете
   lifecycle_rule {
     # Уникальный идентификатор правила
