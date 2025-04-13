@@ -30,9 +30,9 @@ terraform init
 terraform apply
 ```
 
-Формируем kubeconfig для кластера k8s с указанным ID (xxx) в Yandex Cloud, используя внешний IP (--external)
+Формируем kubeconfig для кластера k8s с указанным ID (идентификатор_кластера) в Yandex Cloud, используя внешний IP (--external)
 ```shell
-yc managed-kubernetes cluster get-credentials --id xxx --external --force
+yc managed-kubernetes cluster get-credentials --id идентификатор_кластера --external --force
 ```
 
 Проверяем сгенерированный конфиг values_sentry.yaml из шаблона
