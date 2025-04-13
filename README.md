@@ -25,7 +25,7 @@
 Запускаем инфраструктуру:
 
 ```shell
-export YC_FOLDER_ID='ваша подсеть'
+export YC_FOLDER_ID='ваш folder'
 terraform init
 terraform apply
 ```
