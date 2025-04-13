@@ -12,7 +12,7 @@ resource "yandex_mdb_postgresql_cluster" "postgresql_cluster" {
   # Конфигурация кластера PostgreSQL
   config {
     # Версия PostgreSQL
-    version = "16" # TODO поменять на 16
+    version = "16" # Версия PostgreSQL
 
     # Включение автофейловера (автоматический перевод на другой узел при сбое)
     autofailover = true
@@ -27,7 +27,7 @@ resource "yandex_mdb_postgresql_cluster" "postgresql_cluster" {
       # Тип диска
       disk_type_id       = "network-ssd"
 
-      # Предустановленные ресурсы для кластера
+      # Пресет ресурсов для узлов PostgreSQL
       resource_preset_id = "s3-c2-m8"
     }
   }
@@ -84,7 +84,7 @@ resource "yandex_mdb_postgresql_user" "postgresql_user" {
   password   = local.postgres_password
 
   # Ограничение по количеству соединений
-  conn_limit = 300 # TODO увеличить conn_limit
+  conn_limit = 300
 
   # Разрешения для пользователя (пока пустой список)
   grants     = []

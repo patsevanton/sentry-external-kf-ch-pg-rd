@@ -9,6 +9,10 @@
 - Помогает разработчикам быстро находить и исправлять баги.
 - Поддерживает множество языков и фреймворков
 
+## Для кого этот пост
+- Этот пост для тех кто хочет перейти с Sentry в docker-compose
+- Для тех кто хочет перейти с Nodestore в PostgreSQL
+
 ## Отличия от предыдущего поста про [Sentry](https://habr.com/ru/companies/magnit/articles/831264/)
 - Используются Kafka, ClickHouse вне Kubernetes
 - Для Nodestore используется S3
