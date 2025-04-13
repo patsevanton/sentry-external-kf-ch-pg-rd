@@ -12,6 +12,20 @@ resource "yandex_storage_bucket" "nodestore" {
   # Имя бакета, которое определено в локальной переменной
   bucket = local.nodestore_bucket
 
+  # Правило жизненного цикла объектов в бакете
+  lifecycle_rule {
+    # Уникальный идентификатор правила
+    id      = "delete-after-30-days"
+    # Флаг, указывающий, что правило активно
+    enabled = true
+
+    # Параметры истечения срока хранения объектов
+    expiration {
+      # Объекты будут автоматически удаляться через 30 дней после загрузки
+      days = 30
+    }
+  }
+
   # Привязка статического ключа доступа (access_key) и секретного ключа (secret_key)
   access_key = yandex_iam_service_account_static_access_key.nodestore_bucket_key.access_key
   secret_key = yandex_iam_service_account_static_access_key.nodestore_bucket_key.secret_key
