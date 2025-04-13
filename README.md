@@ -19,6 +19,7 @@
 - Добавлен пример сборки кастомных image sentry, snuba, replay с сертификатом от yandex
 - Подключение Kafka, Redis, ClickHouse, Postgres через SSL (можно отключить).
 - Динамическое формирование values для helm чарта sentry
+- Используется чистый terraform чтобы вам было легче разобраться в коде 
 
 ## Быстрый старт в yandex cloud
 
